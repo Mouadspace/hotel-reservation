@@ -61,7 +61,6 @@ public class Login implements ActionListener, MouseListener{
   public void actionPerformed(ActionEvent event) {
       if(event.getSource() == loginButton ){
       try {
-        System.out.println("Hello there");
         String email = loginField.getText();
         String pass  = passField.getText();
 
@@ -76,7 +75,6 @@ public class Login implements ActionListener, MouseListener{
         }
         else if (Admin.checkAdmin(email, pass))
         {
-          System.out.println("Here");
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
