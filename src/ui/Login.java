@@ -23,6 +23,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import model.User;
+import model.Admin;
 import mswing.CustomButton;
 import mswing.CustomFrame;
 
@@ -60,18 +61,30 @@ public class Login implements ActionListener, MouseListener{
   public void actionPerformed(ActionEvent event) {
       if(event.getSource() == loginButton ){
       try {
+        System.out.println("Hello there");
         String email = loginField.getText();
         String pass  = passField.getText();
 
         boolean userExist = user.checkUser(email,pass) ;
-        if (userExist) {
+        if (userExist) 
+        {
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
           frame.dispose();
           new Home();
-
-        }else{
+        }
+        else if (Admin.checkAdmin(email, pass))
+        {
+          System.out.println("Here");
+          loginField.setText("");
+          passField.setText("");
+          authErr.setVisible(false);
+          frame.dispose();
+          new Home(); // Admin here
+        }
+        else
+        {
           authErr.setText("username or password incorrect");
           authErr.setVisible(true);
         }
