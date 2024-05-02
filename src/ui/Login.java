@@ -79,7 +79,7 @@ public class Login implements ActionListener, MouseListener{
           passField.setText("");
           authErr.setVisible(false);
           frame.dispose();
-          new Home(); // Admin here
+          new AdminHome(); // Admin here
         }
         else
         {
@@ -89,6 +89,8 @@ public class Login implements ActionListener, MouseListener{
               
       } catch (SQLException e) {
           e.printStackTrace();
+      } catch (Exception e) {
+        e.printStackTrace();
       }
 
   }
