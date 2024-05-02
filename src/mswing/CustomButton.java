@@ -34,7 +34,18 @@ public class CustomButton extends JButton {
     public void setBorderRadius(int borderRadius) {
         this.borderRadius = borderRadius;
     }
+    public void setBorder(int thickness, Color borderColor) {
+        this.thickness = thickness;
+        this.borderColor = borderColor;
+    }
+    
 
+    public int getThickness() {
+        return thickness;
+    }
+
+    private int thickness = 0;
+    private Color borderColor = new Color(0, 0, 0, 0);
     private int borderRadius = 16;
     private Animator animator;
     private int targetSize;
@@ -84,8 +95,13 @@ public class CustomButton extends JButton {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(borderColor);
+        g2.fillRoundRect(0, 0, width, height, borderRadius + getThickness(), borderRadius + getThickness());
+        
         g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, width, height, borderRadius, borderRadius);
+        g2.fillRoundRect(getThickness(), getThickness(), width - getThickness() * 2, height - getThickness() * 2, borderRadius, borderRadius);
+
+        
         if (pressedPoint != null) {
             g2.setColor(effectColor);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));

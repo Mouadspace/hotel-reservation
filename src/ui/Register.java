@@ -93,6 +93,12 @@ public class Register implements ActionListener, MouseListener{
         }         
       } catch (SQLException e) {
           e.printStackTrace();
+      } catch (FontFormatException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
       }
 
   }
