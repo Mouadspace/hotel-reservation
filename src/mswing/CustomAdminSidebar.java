@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import javax.imageio.ImageIO;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class CustomAdminSidebar extends JPanel{
         setBounds(0, 0, 250, 550);
         setLayout(new BorderLayout());
 
-        // Loading the icon 
+        // Loading the icon
         BufferedImage hotelOriginalImage = ImageIO.read(new File("assets/hotel2.png"));
         Image HotelresizedImage = hotelOriginalImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         ImageIcon HotelresizedIcon = new ImageIcon(HotelresizedImage);
@@ -87,6 +88,18 @@ public class CustomAdminSidebar extends JPanel{
         option1.setHorizontalAlignment(JLabel.LEFT);
         option1.setVerticalAlignment(JLabel.CENTER);
         option1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                option1.setBackground(Color.BLACK);
+                option1.setForeground(Color.WHITE);
+                option1.setOpaque(true);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                option1.setOpaque(false);
+                option1.setBackground(null); // Reset to default background
+                option1.setForeground(Color.BLACK); // Reset to default text color
+            }
+
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 1 clicked
                 CardLayout cardLayout = (CardLayout) cards.getLayout();
@@ -112,6 +125,18 @@ public class CustomAdminSidebar extends JPanel{
         option2.setHorizontalAlignment(JLabel.LEFT);
         option2.setVerticalAlignment(JLabel.CENTER);
         option2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                option2.setBackground(Color.BLACK);
+                option2.setForeground(Color.WHITE);
+                option2.setOpaque(true);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                option2.setOpaque(false);
+                option2.setBackground(null); // Reset to default background
+                option2.setForeground(Color.BLACK); // Reset to default text color
+            }
+
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 2 clicked
                 CardLayout cardLayout = (CardLayout) cards.getLayout();
@@ -137,6 +162,18 @@ public class CustomAdminSidebar extends JPanel{
         option3.setHorizontalAlignment(JLabel.LEFT);
         option3.setVerticalAlignment(JLabel.CENTER);
         option3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                option3.setBackground(Color.BLACK);
+                option3.setForeground(Color.WHITE);
+                option3.setOpaque(true);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                option3.setOpaque(false);
+                option3.setBackground(null); // Reset to default background
+                option3.setForeground(Color.BLACK); // Reset to default text color
+            }
+
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 3 clicked
                 CardLayout cardLayout = (CardLayout) cards.getLayout();
