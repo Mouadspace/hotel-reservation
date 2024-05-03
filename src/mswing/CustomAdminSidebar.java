@@ -1,6 +1,7 @@
 package mswing;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -25,8 +26,11 @@ public class CustomAdminSidebar extends JPanel{
     private final int iconSize = 80;
     private final int optionSpacing = 12;
     private final float fontSize = 23f;
-    public CustomAdminSidebar() throws IOException, FontFormatException
+    private JPanel cards; // Store a "reference" to cards
+    public CustomAdminSidebar(JPanel cards) throws IOException, FontFormatException
     {
+        this.cards = cards;
+
         // Import font file
         File font_file = new File("Poppins-Regular.ttf");
         Font font = Font.createFont(Font.TRUETYPE_FONT, font_file);
@@ -85,7 +89,8 @@ public class CustomAdminSidebar extends JPanel{
         option1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 1 clicked
-                System.out.println("Option 1 clicked");
+                CardLayout cardLayout = (CardLayout) cards.getLayout();
+                cardLayout.show(cards, "Room Availability");
             }
         });
         option1.setBorder(BorderFactory.createCompoundBorder(
@@ -99,7 +104,7 @@ public class CustomAdminSidebar extends JPanel{
         optionsPanel.add(Box.createVerticalStrut(optionSpacing));
 
         // Option 2
-        JLabel option2 = new JLabel("Price & Discount");
+        JLabel option2 = new JLabel("Pricing & Discounts");
         option2.setFont(font.deriveFont(fontSize));
         option2.setForeground(Color.BLACK);
         option2.setOpaque(false);
@@ -109,7 +114,8 @@ public class CustomAdminSidebar extends JPanel{
         option2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 2 clicked
-                System.out.println("Option 2 clicked");
+                CardLayout cardLayout = (CardLayout) cards.getLayout();
+                cardLayout.show(cards, "Pricing & Discounts");
             }
         });
         option2.setBorder(BorderFactory.createCompoundBorder(
@@ -123,7 +129,7 @@ public class CustomAdminSidebar extends JPanel{
         optionsPanel.add(Box.createVerticalStrut(optionSpacing));
 
         // Option 3
-        JLabel option3 = new JLabel("Client");
+        JLabel option3 = new JLabel("Customers");
         option3.setFont(font.deriveFont(fontSize));
         option3.setForeground(Color.BLACK);
         option3.setOpaque(false);
@@ -133,7 +139,8 @@ public class CustomAdminSidebar extends JPanel{
         option3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Action for Option 3 clicked
-                System.out.println("Option 3 clicked");
+                CardLayout cardLayout = (CardLayout) cards.getLayout();
+                cardLayout.show(cards, "Customers");
             }
         });
         option3.setBorder(BorderFactory.createCompoundBorder(
