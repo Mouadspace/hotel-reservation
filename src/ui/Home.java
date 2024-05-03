@@ -1,15 +1,21 @@
 package ui;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import com.mysql.cj.util.Util;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import mswing.CustomButton;
 import mswing.CustomField;
@@ -17,10 +23,11 @@ import mswing.CustomFrame;
 import mswing.CustomPanel;
 import utils.ImgUtil;
 
-public class Home implements ActionListener{
+public class Home implements ActionListener, DateChangeListener {
   private CustomFrame frame;
   private CustomButton backButton;
-
+  private DatePicker startDatePicker;
+  private DatePicker endDatePicker;
 
 
 
@@ -80,11 +87,10 @@ public class Home implements ActionListener{
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
     
     GridBagConstraints gbcDates = new GridBagConstraints();
-    GridLayout gridbagLayout = new GridLayout();
     
     JPanel datesPanel = new JPanel();
     datesPanel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-    datesPanel.setLayout(gridbagLayout);
+    datesPanel.setLayout(new GridBagLayout());
     
     JLabel startDate = new JLabel("Choose your starting date");
     startDate.setFont(labelSmall);
@@ -96,11 +102,36 @@ public class Home implements ActionListener{
 
     JLabel endDate = new JLabel("Choose your ending date");
     endDate.setFont(labelSmall);
-    gbcDates.gridx = 2;
+    gbcDates.gridx = 1;
     gbcDates.gridy = 0;
     gbcDates.fill  = GridBagConstraints.HORIZONTAL;
-    gbcDates.weightx = 2;
+    gbcDates.weightx = 1;
     datesPanel.add(endDate, gbcDates);
+
+    DatePickerSettings datePickerSettings1 = new DatePickerSettings();
+    datePickerSettings1.setFormatForDatesBeforeCommonEra("dd.MM.yyyy");
+    datePickerSettings1.setFormatForDatesCommonEra("dd.MM.yyyy");
+
+
+    startDatePicker = new DatePicker(datePickerSettings1);
+    gbcDates.gridx = 0;
+    gbcDates.gridy = 2;
+    gbcDates.fill  = GridBagConstraints.HORIZONTAL;
+    gbcDates.weightx = 1;
+    datesPanel.add(startDatePicker, gbcDates);
+    startDatePicker.setDateToToday(); 
+
+    DatePickerSettings datePickerSettings2 = new DatePickerSettings();
+    datePickerSettings2.setFormatForDatesBeforeCommonEra("dd.MM.yyyy");
+    datePickerSettings2.setFormatForDatesCommonEra("dd.MM.yyyy");
+
+    endDatePicker = new DatePicker(datePickerSettings2);
+    gbcDates.gridx = 1;
+    gbcDates.gridy = 2;
+    gbcDates.fill  = GridBagConstraints.HORIZONTAL;
+    gbcDates.weightx = 1;
+    datesPanel.add(endDatePicker, gbcDates);
+    endDatePicker.setDateToToday(); 
 
     datesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     datesPanel.setPreferredSize(new Dimension(500, datesPanel.getPreferredSize().height));
@@ -147,7 +178,6 @@ public class Home implements ActionListener{
     
     Border margin  = BorderFactory.createEmptyBorder(0, 15, 0, 0);
     paymentOptionsContainer.setBorder(margin);
-    // paymentOptionsContainer.add(pypal);
     paymentOptionsContainer.setMaximumSize(new Dimension(paymentOptionsContainer.getMaximumSize().width, paymentOptionsContainer.getPreferredSize().height));
 
 
@@ -301,6 +331,8 @@ public class Home implements ActionListener{
 
     // ADDING LISTENERS 
     backButton.addActionListener(this);
+    startDatePicker.addDateChangeListener(this);
+    endDatePicker.addDateChangeListener(this);
 
     // TO AVOID BUGS
     frame.setVisible(true);
@@ -312,6 +344,22 @@ public class Home implements ActionListener{
     if (e.getSource() == backButton){
       System.out.println("back icon clicked");
     }
+  }
+
+
+
+  @Override
+  public void dateChanged(DateChangeEvent e) {
+    LocalDate firstDate = startDatePicker.getDate();
+    LocalDate secondDate = endDatePicker.getDate();
+    long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
+
+    if(diff >= 0){
+      System.out.println(diff);
+    }else{
+      System.out.println("invalide");
+    }
+
   }
 
 
