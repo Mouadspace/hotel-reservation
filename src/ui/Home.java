@@ -8,7 +8,9 @@ import java.time.temporal.ChronoUnit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -78,11 +80,25 @@ public class Home implements ActionListener, DateChangeListener {
     headerPanel.add(backIconHelper);
 
 
+    // RIGHT SIDE PANEL
     JPanel summaryPanel = new JPanel();
+    summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
     summaryPanel.setBackground(new Color(255, 255, 255));
     summaryPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(0, 0, 0, 51)));
     summaryPanel.setPreferredSize(new Dimension(320, 0));
 
+    JLabel hotelImage = new JLabel();
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 280)));
+    hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
+    summaryPanel.add(hotelImage);
+
+
+    // ADDING COMPONENTS TO SUMMARY PANEL
+    // summaryPanel.add(hotelImage);
+
+
+
+    // LEFT SIDE PANEL
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
     
