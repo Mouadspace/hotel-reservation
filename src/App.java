@@ -2,6 +2,7 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 
 import ui.Login;
+import ui.SavedHotels;
 
 public class App {
     

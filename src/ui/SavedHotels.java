@@ -20,6 +20,12 @@ public class SavedHotels {
         frame.setLayout(new BorderLayout());
         CustomTopBar topbar = new CustomTopBar();
         frame.add(topbar, BorderLayout.NORTH);
+
+        // You have to create the cards for the EAST side
+        // Create a card component
+
+        // Any clicked card should be set in the WEST side
+        // Probably by default you set the first card as the clicked one.
         
         
         frame.setVisible(true);

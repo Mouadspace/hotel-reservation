@@ -48,13 +48,6 @@ public class CustomTopBar extends JPanel {
         Image HotelresizedImage = hotelOriginalImage.getScaledInstance(45, 45, Image.SCALE_SMOOTH);
         ImageIcon HotelresizedIcon = new ImageIcon(HotelresizedImage);
 
-        BufferedImage bookmarkOriginalImage = ImageIO.read(new File("assets/bookmark.png"));
-        Image bookmarkresizedImage = bookmarkOriginalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon bookmarkresizedIcon = new ImageIcon(bookmarkresizedImage);
-
-        BufferedImage userOriginalImage = ImageIO.read(new File("assets/user.png"));
-        Image userresizedImage = userOriginalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon userresizedIcon = new ImageIcon(userresizedImage);
 
         // The Main Content of the topbar
         JPanel mainContent = new JPanel();
@@ -70,17 +63,13 @@ public class CustomTopBar extends JPanel {
         // Elements (Profile, Saved Icon, Language)
         JPanel profileSavedLanguePanel = new JPanel();
 
-        JLabel profileLabel = new JLabel("Profile");
+        JLabel profileLabel = new JLabel("Log out");
         profileLabel.setFont(profileFont);
         profileLabel.setPreferredSize(new Dimension(80, 40));
-        JLabel SavedIconLable = new JLabel(bookmarkresizedIcon);
-        SavedIconLable.setPreferredSize(new Dimension(40, 40));        
 
-        profileLabel.setIcon(userresizedIcon);
 
         profileSavedLanguePanel.setLayout(new BorderLayout());
         profileSavedLanguePanel.setPreferredSize(new Dimension(160, 40));
-        profileSavedLanguePanel.add(SavedIconLable, BorderLayout.WEST);
         profileSavedLanguePanel.add(profileLabel, BorderLayout.EAST);
     
         mainContent.add(profileSavedLanguePanel, BorderLayout.EAST);
@@ -96,14 +85,6 @@ public class CustomTopBar extends JPanel {
             }
         });
 
-        // View Reserved Hotels
-        SavedIconLable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Define the action to perform when the label is clicked
-                JOptionPane.showMessageDialog(null, "Clicked on Reserved");
-            }
-        });
 
         // Profile Page
         profileLabel.addMouseListener(new MouseAdapter() {
