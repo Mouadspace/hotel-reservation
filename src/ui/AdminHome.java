@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JPanel;
 
@@ -29,9 +30,15 @@ public class AdminHome {
         frame.add(sideBar, BorderLayout.WEST);
 
         frame.add(cards, BorderLayout.CENTER);
-        
-        CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability();
-        cards.add(roomAvailabilityPanel, "Room Availability");
+        try
+        {
+            CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability();
+            cards.add(roomAvailabilityPanel, "Room Availability");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
         CustomAdminPriceAndDiscount priceAndDiscount = new CustomAdminPriceAndDiscount();
         cards.add(priceAndDiscount, "Pricing & Discounts");
