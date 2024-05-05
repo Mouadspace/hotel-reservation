@@ -33,7 +33,7 @@ public class CustomAdminCustomers extends JPanel {
         title.setHorizontalAlignment(JLabel.LEFT);
         title.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         title.setBorder(BorderFactory.createCompoundBorder(
-            new EmptyBorder(0, 15, 0, 0), // Add left margin of 10px
+            new EmptyBorder(0, 15, 0, 0), // Add left margin
             title.getBorder()
         ));
         add(title, BorderLayout.NORTH);

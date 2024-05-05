@@ -27,11 +27,8 @@ public class CustomAdminSidebar extends JPanel{
     private final int iconSize = 80;
     private final int optionSpacing = 12;
     private final float fontSize = 23f;
-    private JPanel cards; // Store a "reference" to cards
     public CustomAdminSidebar(JPanel cards) throws IOException, FontFormatException
     {
-        this.cards = cards;
-
         // Import font file
         File font_file = new File("Poppins-Regular.ttf");
         Font font = Font.createFont(Font.TRUETYPE_FONT, font_file);
