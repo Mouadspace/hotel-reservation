@@ -23,7 +23,7 @@ CREATE TABLE Reservation (
     CheckInDate DATE,
     CheckOutDate DATE,
     TotalPrice DECIMAL(10, 2),
-    Status VARCHAR(50),
+
     FOREIGN KEY (ClientID) REFERENCES Client(ClientID),
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID)
 );
