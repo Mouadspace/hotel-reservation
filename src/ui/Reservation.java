@@ -24,32 +24,19 @@ import mswing.CustomPanel;
 import utils.ImgUtil;
 import utils.navigation.Screen;
 
-public class SavedHotels extends Screen implements ActionListener, DateChangeListener {
-
-  // Getting data form the database
-  // Image of the cancellation Panel - LEFT Panel:
-  String leftPanelImage = "connecting-rooms.jpg";
-  // Room type - LEFT Panel:
-  String leftPanelRoomType = "Connection Room";
-  // Check In:
-  String leftPanelCheckIn = "12-09-2024";
-  // Check Out:
-  String leftPanelCheckOut = "15-09-2024";
-  // Room details - LEFT Panel:
-  String leftPanelRoomDetails = "Soundproofed Air conditioning Free cots / infant beds Flat-screen TV Hairdryer Bathrobes Free bottled water Espresso maker";
-  // Room Features - LEFT Panel:
-  String leftPanelRoomFeatures = "*WI-FI *Bathroom *Flat-screen TV *Expresso maker";
-  
-  // Total Price - LEFT Panel:
-  Integer totalPriceLeftPanel = 220;    
-  // Cancelation date - LEFT Panel
-  Boolean freeCancellation = true;
-
-  // Initionalizing
+public class Reservation extends Screen implements ActionListener, DateChangeListener {
+  private JPanel frame;
   private CustomButton backButton;
   private DatePicker startDatePicker;
   private DatePicker endDatePicker;
-  
+  private JLabel checkInDate;
+  private JLabel checkOutDate; 
+  private JLabel prices;
+  private JLabel calc;
+  private JLabel totalPrices;
+  private JLabel taxesPrice;
+  private CustomButton confirmPayButton;
+
 
 
 
@@ -64,7 +51,7 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
 
 
 
-  public SavedHotels() throws FontFormatException, IOException{
+  public Reservation() throws FontFormatException, IOException{
     setLayout(new BorderLayout());
     setBackground(new Color(0xF3F3F3));
 
@@ -74,30 +61,25 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
     Font h4Font = font.deriveFont(Font.BOLD,24f);
     Font h5Font = font.deriveFont(Font.BOLD,20f);
     Font h6Font = font.deriveFont(Font.BOLD,16f);
-    // Font h2Font = font.deriveFont(Font.BOLD, 0)
 
     Font labelSmall = font.deriveFont(12f);
     Font labelMedium = font.deriveFont(Font.BOLD,12f);
 
-    // Here we're creating a panel with Flow Layout with a left alignment.
     JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    // We set the height of the panel to 50px, and for the width is stretches.
     headerPanel.setPreferredSize(new Dimension(0, 50));
-    // Setting the background color.
     headerPanel.setBackground(new Color(0xF3F3F3));
-    // Creating a 1px border in the bottom of the panel.
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 51)));
 
 
-    // Here is a panel for the icon of going back
+
+
     JPanel backIconHelper = new JPanel();
     backIconHelper.setBackground(new Color(0, 0, 0, 0));
     backIconHelper.setBorder(BorderFactory.createEmptyBorder(0 ,0, 0, 0));
-    
+
     backButton = new CustomButton();
     backButton.setIcon(new ImageIcon(ImgUtil.resizeImage("assets/back.png", 20, 20)));
     backButton.setFocusable(false);
-    // Here we use the border as margin or padding
     backButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     backButton.setBorderRadius(100);
     backButton.setForeground(Color.red);
@@ -108,151 +90,177 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
     headerPanel.add(backIconHelper);
 
 
-    // RIGHT SIDE PANEL - To see all the user's reservations
-    JPanel cancellationPanel = new JPanel();
-    cancellationPanel.setLayout(new BoxLayout(cancellationPanel, BoxLayout.Y_AXIS));
-    cancellationPanel.setBackground(new Color(255, 255, 255));
-    cancellationPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(0, 0, 0, 51)));
-    cancellationPanel.setPreferredSize(new Dimension(320, 0));
+    // RIGHT SIDE PANEL
+    JPanel summaryPanel = new JPanel();
+    summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
+    summaryPanel.setBackground(new Color(255, 255, 255));
+    summaryPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(0, 0, 0, 51)));
+    summaryPanel.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+leftPanelImage, 12, 280)));
-    // Here we use the border as margin or padding
-    hotelImage.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 280)));
+    hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
     
-    JLabel roomType = new JLabel(leftPanelRoomType);
-    roomType.setFont(h5Font);
-    roomType.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
+    JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    statusPanel.setBackground(new Color(0, 0, 0, 0));
+    JLabel statusLabel = new JLabel("available");
+    statusLabel.setFont(labelSmall);
+    statusLabel.setForeground(new Color(0x2B8A3E));
+    statusPanel.setAlignmentX(0.0f);
     
-    JPanel CheckingsPanel = new JPanel(new GridBagLayout());
-    CheckingsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-    CheckingsPanel.setAlignmentX(0.0f);
-    CheckingsPanel.setBackground(new Color(0, 0, 0, 0));
-    GridBagConstraints checkingsGridXY = new GridBagConstraints();
+    CustomPanel circle = new CustomPanel();
+    circle.setRoundAll(100);
+    circle.setPreferredSize(new Dimension(10, 10));
+    circle.setBackground(new Color(0x2B8A3E));
+    
+    statusPanel.add(circle);
+    statusPanel.add(statusLabel);
+    statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+    statusPanel.setMaximumSize(new Dimension(320, statusPanel.getPreferredSize().height));
+
+    
+    JLabel reservationText = new JLabel("Your reservation summary");
+    reservationText.setFont(h5Font);
+    reservationText.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+    
+    JPanel reservationPanel = new JPanel(new GridBagLayout());
+    reservationPanel.setAlignmentX(0.0f);
+    reservationPanel.setBackground(new Color(0, 0, 0, 0));
+    GridBagConstraints gbcResrvation = new GridBagConstraints();
 
     JLabel checkIn = new JLabel("Check-in");
     checkIn.setFont(labelSmall);
-    checkingsGridXY.gridx = 0;
-    checkingsGridXY.gridy = 0;
-    checkingsGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    checkingsGridXY.weightx = 1;
-    CheckingsPanel.add(checkIn, checkingsGridXY);
+    gbcResrvation.gridx = 0;
+    gbcResrvation.gridy = 0;
+    gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
+    gbcResrvation.weightx = 1;
+    reservationPanel.add(checkIn, gbcResrvation);
 
     JLabel checkOut = new JLabel("Check-out");
     checkOut.setFont(labelSmall);
-    checkingsGridXY.gridx = 0;
-    checkingsGridXY.gridy = 1;
-    checkingsGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    checkingsGridXY.weightx = 1;
-    CheckingsPanel.add(checkOut, checkingsGridXY);
+    gbcResrvation.gridx = 0;
+    gbcResrvation.gridy = 1;
+    gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
+    gbcResrvation.weightx = 1;
+    reservationPanel.add(checkOut, gbcResrvation);
 
-    JLabel checkInDate = new JLabel(leftPanelCheckIn);
+    checkInDate = new JLabel();
+    // checkInDate.setText("12-09-2024");
     checkInDate.setFont(labelMedium);
-    checkingsGridXY.gridx = 1;
-    checkingsGridXY.gridy = 0;
-    checkingsGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    checkingsGridXY.weightx = 0;
-    CheckingsPanel.add(checkInDate, checkingsGridXY);
+    gbcResrvation.gridx = 1;
+    gbcResrvation.gridy = 0;
+    gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
+    gbcResrvation.weightx = 0;
+    reservationPanel.add(checkInDate, gbcResrvation);
 
-    JLabel checkOutDate = new JLabel(leftPanelCheckOut);
+    checkOutDate = new JLabel();
+    // checkOutDate.setText("12-09-2024");
     checkOutDate.setFont(labelMedium);
-    checkingsGridXY.gridx = 1;
-    checkingsGridXY.gridy = 1;
-    checkingsGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    checkingsGridXY.weightx = 0;
-    CheckingsPanel.add(checkOutDate, checkingsGridXY);
+    gbcResrvation.gridx = 1;
+    gbcResrvation.gridy = 1;
+    gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
+    gbcResrvation.weightx = 0;
+    reservationPanel.add(checkOutDate, gbcResrvation);
     
-    CheckingsPanel.setMaximumSize(new Dimension(320, CheckingsPanel.getPreferredSize().height));
 
-    JLabel roomDetailsTitle = new JLabel("Room details");
-    roomDetailsTitle.setFont(h6Font);
-    roomDetailsTitle.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
+    JPanel pricingPanel = new JPanel(new GridBagLayout());
+    pricingPanel.setAlignmentX(0.0f);
+    pricingPanel.setBackground(new Color(0, 0, 0, 0));
+    GridBagConstraints gbcPricing= new GridBagConstraints();
 
-    JTextArea roomDetails = new JTextArea(leftPanelRoomDetails);
-    roomDetails.setFont(labelSmall);
-    roomDetails.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-    // Here for jumping the line
-    roomDetails.setLineWrap(true);
-    roomDetails.setWrapStyleWord(true);
-    roomDetails.setAlignmentX(0.0f);
-    roomDetails.setMaximumSize(new Dimension(roomDetails.getMaximumSize().width, roomDetails.getPreferredSize().height));
+    JLabel pricingText = new JLabel("Pricing breakdown");
+    pricingText.setFont(h6Font);
+    gbcPricing.gridx = 0;
+    gbcPricing.gridy = 0;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 1;
+    pricingPanel.add(pricingText, gbcPricing);
 
-    JLabel roomFeaturesTitle = new JLabel("Features");
-    roomFeaturesTitle.setFont(h6Font);
-    roomFeaturesTitle.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
 
-    JTextArea roomFeatures = new JTextArea(leftPanelRoomFeatures);
-    roomFeatures.setFont(labelSmall);
-    roomFeatures.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-    // Here for jumping the line
-    roomFeatures.setLineWrap(true);
-    roomFeatures.setWrapStyleWord(true);
-    roomFeatures.setAlignmentX(0.0f);
-    roomFeatures.setMaximumSize(new Dimension(roomFeatures.getMaximumSize().width, roomFeatures.getPreferredSize().height));
+    prices = new JLabel("$100");
+    prices.setFont(labelSmall);
+    gbcPricing.gridx = 0;
+    gbcPricing.gridy = 1;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 1;
+    gbcPricing.insets = new Insets(0, 0, 0, 0);
+    pricingPanel.add(prices, gbcPricing);
 
+    JLabel taxes = new JLabel("Taxes 10%");
+    taxes.setFont(labelSmall);
+    gbcPricing.gridx = 0;
+    gbcPricing.gridy = 2;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 1;
+    pricingPanel.add(taxes, gbcPricing);
+
+    calc = new JLabel();
+    calc.setFont(labelMedium);
+    gbcPricing.gridx = 1;
+    gbcPricing.gridy = 1;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 0;
+    pricingPanel.add(calc, gbcPricing);
+
+    taxesPrice = new JLabel();
+    taxesPrice.setFont(labelMedium);
+    gbcPricing.gridx = 1;
+    gbcPricing.gridy = 2;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 0;
+    pricingPanel.add(taxesPrice, gbcPricing);
+
+    JLabel totalPricesLabel = new JLabel("Total Price");
+    totalPricesLabel.setFont(labelMedium);
+    totalPricesLabel.setForeground(new Color(0x2B8A3E));
+    gbcPricing.gridx = 0;
+    gbcPricing.gridy = 3;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 0;
+    pricingPanel.add(totalPricesLabel, gbcPricing);
+
+    totalPrices = new JLabel("220$");
+    totalPrices.setFont(labelMedium);
+    totalPrices.setForeground(new Color(0x2B8A3E));
+    gbcPricing.gridx = 1;
+    gbcPricing.gridy = 3;
+    gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
+    gbcPricing.weightx = 0;
+    gbcPricing.insets = new Insets(5, 0, 0, 0);
+    pricingPanel.add(totalPrices, gbcPricing);
+
+    reservationPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+    reservationPanel.setMaximumSize(new Dimension(320, reservationPanel.getPreferredSize().height));
     
-    // totalPriceAndCancelPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 20));
-    JPanel totalPriceAndCancelPanel = new JPanel(new GridBagLayout());
-    totalPriceAndCancelPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-    totalPriceAndCancelPanel.setAlignmentX(0.0f);
-    totalPriceAndCancelPanel.setBackground(new Color(0, 0, 0, 0));
-    GridBagConstraints totalPriceAndCancelPanelGridXY = new GridBagConstraints();
+    pricingPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+    pricingPanel.setMaximumSize(new Dimension(320, pricingPanel.getPreferredSize().height));
+    
 
-    JLabel totalPrice = new JLabel(totalPriceLeftPanel.toString()+"$");
-    totalPrice.setFont(h4Font);
-    totalPrice.setForeground(new Color(0xFC6222));
-    totalPriceAndCancelPanelGridXY.gridx = 0;
-    totalPriceAndCancelPanelGridXY.gridy = 0;
-    totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    totalPriceAndCancelPanelGridXY.weightx = 1;
-    totalPriceAndCancelPanel.add(totalPrice, totalPriceAndCancelPanelGridXY);
-
-    JPanel cancelPanel = new JPanel(new GridLayout());
-    cancelPanel.setBackground(new Color(0, 0, 0, 0));
-    cancelPanel.setAlignmentX(0.0f);
-    CustomButton cancelButton = new CustomButton();
-    cancelButton.setFocusable(false);
-    cancelButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-    cancelButton.setBorder(1, new Color(0xFC6222) );
-    cancelButton.setBorderRadius(12);
-    cancelButton.setPreferredSize(new Dimension(75, 50));
-    cancelButton.setEffectColor(new Color(0xFC6222));
-    cancelButton.setForeground(new Color(0xFC6222));
-    cancelButton.setText("Cancel");
-    cancelButton.setFont(labelMedium);
-    cancelButton.setFocusable(false);
-    // Set some action to the button
-    cancelButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == cancelButton){
-                System.out.println("Cancel button clicked");
-              }
-        }     
-      });
-    // Add the button to its Panel:
-    cancelPanel.add(cancelButton);
-    // Addin the cancel to the grid
-    totalPriceAndCancelPanelGridXY.gridx = 1;
-    totalPriceAndCancelPanelGridXY.gridy = 0;
-    totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    totalPriceAndCancelPanelGridXY.weightx = 0;
-    totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
+    JPanel helperButtom = new JPanel(new GridLayout());
+    helperButtom.setBackground(new Color(0, 0, 0, 0));
+    helperButtom.setAlignmentX(0.0f);
+    confirmPayButton = new CustomButton();
+    confirmPayButton.setBackground(new Color(0xFC6222));
+    confirmPayButton.setForeground(new Color(0xFFFFFF));
+    confirmPayButton.setText("Confirm & pay 200$");
+    confirmPayButton.setFont(h6Font);
+    confirmPayButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+    confirmPayButton.setFocusable(false);
+    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
+    helperButtom.add(confirmPayButton);
 
 
     // ADDING COMPONENTS TO SUMMARY PANEL
-    cancellationPanel.add(hotelImage);
-    cancellationPanel.add(roomType);
-    cancellationPanel.add(CheckingsPanel);
-    cancellationPanel.add(roomDetailsTitle);
-    cancellationPanel.add(roomDetails);
-    cancellationPanel.add(roomFeaturesTitle);
-    cancellationPanel.add(roomFeatures);
-    cancellationPanel.add(totalPriceAndCancelPanel);
-    // cancellationPanel.add(Box.createVerticalGlue());
-    // cancellationPanel.add(cancelPanel);
+    summaryPanel.add(hotelImage);
+    summaryPanel.add(statusPanel);
+    summaryPanel.add(reservationText);
+    summaryPanel.add(reservationPanel);
+    summaryPanel.add(pricingPanel);
+    summaryPanel.add(Box.createVerticalGlue());
+    summaryPanel.add(helperButtom);
 
 
 
@@ -499,7 +507,7 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
     // ADDING PANELES TO FRAME
     add(headerPanel, BorderLayout.NORTH);
     add(mainPanel, BorderLayout.CENTER);
-    add(cancellationPanel, BorderLayout.EAST);
+    add(summaryPanel, BorderLayout.EAST);
 
 
 
@@ -508,6 +516,8 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
     startDatePicker.addDateChangeListener(this);
     endDatePicker.addDateChangeListener(this);
 
+    // TO AVOID BUGS
+    // frame.setVisible(true);
   }
 
 
@@ -515,6 +525,7 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == backButton){
       System.out.println("back icon clicked");
+      navigateTo("/home");
     }
   }
 
@@ -526,11 +537,36 @@ public class SavedHotels extends Screen implements ActionListener, DateChangeLis
     LocalDate secondDate = endDatePicker.getDate();
     long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
 
-    if(diff >= 0){
-      System.out.println(diff);
+    if(diff > 0){
+      confirmPayButton.setEnabled(true);
+      confirmPayButton.setEffectColor(new Color(252, 255, 255));
+
+      checkOutDate.setText(secondDate.toString());
+      checkInDate.setText(firstDate.toString());
+      frame.repaint();
+
+
+      int res = (int) (100 * diff);
+      int  taxes = (int) (res * 0.1);
+
+      prices.setText("100$ x "+ diff + " nights");
+      calc.setText(res  + "$");
+      taxesPrice.setText(taxes + "$");
+
+      res += taxes;
+      totalPrices.setText(res + "$");
+      confirmPayButton.setText("Confirm & pay " + res + "$");
+      
     }else{
-      System.out.println("invalide");
+      confirmPayButton.setText("Invalide Dates");
+      confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
+      confirmPayButton.setEnabled(false);
+      prices.setText("100$");
+      calc.setText("");
+      taxesPrice.setText("");
+      totalPrices.setText("");
     }
+
 
   }
 
