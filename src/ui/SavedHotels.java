@@ -23,8 +23,9 @@ import mswing.CustomField;
 import mswing.CustomFrame;
 import mswing.CustomPanel;
 import utils.ImgUtil;
+import utils.navigation.Screen;
 
-public class SavedHotels implements ActionListener, DateChangeListener {
+public class SavedHotels extends Screen implements ActionListener, DateChangeListener {
 
   // Getting data form the database
   // Image of the cancellation Panel - LEFT Panel:
@@ -46,7 +47,6 @@ public class SavedHotels implements ActionListener, DateChangeListener {
   Boolean freeCancellation = true;
 
   // Initionalizing
-  private CustomFrame frame;
   private CustomButton backButton;
   private DatePicker startDatePicker;
   private DatePicker endDatePicker;
@@ -66,9 +66,8 @@ public class SavedHotels implements ActionListener, DateChangeListener {
 
 
   public SavedHotels() throws FontFormatException, IOException{
-    frame = new CustomFrame();
-    frame.getContentPane().setBackground(new Color(0xF3F3F3));
-    frame.setResizable(true);
+    setLayout(new BorderLayout());
+    setBackground(new Color(0xF3F3F3));
 
     // FONTS : 
     File font_file = new File("Poppins-Regular.ttf");
@@ -499,9 +498,9 @@ public class SavedHotels implements ActionListener, DateChangeListener {
 
 
     // ADDING PANELES TO FRAME
-    frame.add(headerPanel, BorderLayout.NORTH);
-    frame.add(mainPanel, BorderLayout.CENTER);
-    frame.add(cancellationPanel, BorderLayout.EAST);
+    add(headerPanel, BorderLayout.NORTH);
+    add(mainPanel, BorderLayout.CENTER);
+    add(cancellationPanel, BorderLayout.EAST);
 
 
 
@@ -510,8 +509,6 @@ public class SavedHotels implements ActionListener, DateChangeListener {
     startDatePicker.addDateChangeListener(this);
     endDatePicker.addDateChangeListener(this);
 
-    // TO AVOID BUGS
-    frame.setVisible(true);
   }
 
 
