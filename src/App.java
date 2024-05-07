@@ -8,8 +8,7 @@ import ui.SavedHotels;
 public class App {
     
     public App() throws FontFormatException, IOException {
-        // new  Login();
-        new SavedHotels();
+        new  Login();
     }
 
     public static void main(String[] args) throws Exception {
