@@ -13,23 +13,22 @@ import mswing.CustomAdminPriceAndDiscount;
 import mswing.CustomAdminRoomAvailability;
 import mswing.CustomAdminSidebar;
 import mswing.CustomFrame;
+import utils.navigation.Screen;
 
-public class AdminHome {
-    CustomFrame frame;
+public class AdminHome extends Screen{
     JPanel cards;
     public AdminHome() throws IOException, FontFormatException 
     {
-        frame = new CustomFrame();
-        frame.setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
         
         cards = new JPanel(new CardLayout());
 
         // Add sidebar to the admin interface
         CustomAdminSidebar sideBar = new CustomAdminSidebar(cards);
         
-        frame.add(sideBar, BorderLayout.WEST);
+        add(sideBar, BorderLayout.WEST);
 
-        frame.add(cards, BorderLayout.CENTER);
+        add(cards, BorderLayout.CENTER);
         try
         {
             CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability();
@@ -46,6 +45,5 @@ public class AdminHome {
         CustomAdminCustomers customers = new CustomAdminCustomers();
         cards.add(customers, "Customers");
 
-        frame.setVisible(true);
     }
 }

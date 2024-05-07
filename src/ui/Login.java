@@ -25,18 +25,18 @@ import javax.swing.border.EmptyBorder;
 import model.User;
 import model.Admin;
 import mswing.CustomButton;
-import mswing.CustomFrame;
+import utils.navigation.Screen;
 
 
-public class Login implements ActionListener, MouseListener{
+public class Login extends Screen implements ActionListener, MouseListener{
 
-  CustomFrame frame;
-  JTextField loginField;
-  JTextField passField;
-  CustomButton loginButton;
-  JLabel authErr;
+  private JTextField loginField;
+  private JTextField passField;
+  private CustomButton loginButton;
+  private JLabel authErr;
+  private JLabel linkLabel;
 
-  User user ;
+  private User user ;
 
   public Login() throws FontFormatException, IOException{
     initComponents();
@@ -70,16 +70,14 @@ public class Login implements ActionListener, MouseListener{
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
-          frame.dispose();
-          new Home();
+          navigateTo("/home");
         }
         else if (Admin.checkAdmin(email, pass))
         {
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
-          frame.dispose();
-          new AdminHome(); // Admin here
+          navigateTo("/admin");
         }
         else
         {
@@ -89,20 +87,15 @@ public class Login implements ActionListener, MouseListener{
               
       } catch (SQLException e) {
           e.printStackTrace();
-      } catch (FontFormatException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      } 
 
   }
   }
 
 
   public void initComponents() throws FontFormatException, IOException{
-    frame = new CustomFrame();
+    setLayout(new BorderLayout());
+
 
 
     // FONTS : 
@@ -199,7 +192,7 @@ public class Login implements ActionListener, MouseListener{
     bLabel.setFont(labelMedium);
     bLabel.setForeground(new Color(0xC7C7C7));
 
-    JLabel linkLabel = new JLabel("Sign up");
+    linkLabel = new JLabel("Sign up");
     linkLabel.setFont(labelMedium);
     linkLabel.setForeground(new Color(0x6A70E0));
     linkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -235,22 +228,17 @@ public class Login implements ActionListener, MouseListener{
 
 
     // ADDING COMPONENTS TO FRAME 
-    frame.add(topPanel,BorderLayout.NORTH);
-    frame.add(middlePanel,BorderLayout.CENTER);
-    frame.add(bottomPanel,BorderLayout.SOUTH);
+    add(topPanel,BorderLayout.NORTH);
+    add(middlePanel,BorderLayout.CENTER);
+    add(bottomPanel,BorderLayout.SOUTH);
 
 
-    // TO AVOID BUGS
-    frame.setVisible(true);
   }
 
   @Override
-  public void mouseClicked(MouseEvent arg0) {
-    frame.dispose();
-    try {
-      new Register();
-    } catch (FontFormatException | IOException e) {
-      e.printStackTrace();
+  public void mouseClicked(MouseEvent e) {
+    if (e.getSource() == linkLabel){
+      navigateTo("/register");
     }
   }
 
