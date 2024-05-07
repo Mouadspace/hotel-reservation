@@ -28,6 +28,14 @@ public class Home implements ActionListener, DateChangeListener {
   private CustomButton backButton;
   private DatePicker startDatePicker;
   private DatePicker endDatePicker;
+  private JLabel checkInDate;
+  private JLabel checkOutDate; 
+  private JLabel prices;
+  private JLabel calc;
+  private JLabel totalPrices;
+  private JLabel taxesPrice;
+  private CustomButton confirmPayButton;
+
 
 
 
@@ -137,7 +145,8 @@ public class Home implements ActionListener, DateChangeListener {
     gbcResrvation.weightx = 1;
     reservationPanel.add(checkOut, gbcResrvation);
 
-    JLabel checkInDate = new JLabel("12-09-2024");
+    checkInDate = new JLabel();
+    // checkInDate.setText("12-09-2024");
     checkInDate.setFont(labelMedium);
     gbcResrvation.gridx = 1;
     gbcResrvation.gridy = 0;
@@ -145,7 +154,8 @@ public class Home implements ActionListener, DateChangeListener {
     gbcResrvation.weightx = 0;
     reservationPanel.add(checkInDate, gbcResrvation);
 
-    JLabel checkOutDate = new JLabel("12-09-2024");
+    checkOutDate = new JLabel();
+    // checkOutDate.setText("12-09-2024");
     checkOutDate.setFont(labelMedium);
     gbcResrvation.gridx = 1;
     gbcResrvation.gridy = 1;
@@ -168,7 +178,7 @@ public class Home implements ActionListener, DateChangeListener {
     pricingPanel.add(pricingText, gbcPricing);
 
 
-    JLabel prices = new JLabel("$100 x 2 nights");
+    prices = new JLabel("$100");
     prices.setFont(labelSmall);
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 1;
@@ -185,7 +195,7 @@ public class Home implements ActionListener, DateChangeListener {
     gbcPricing.weightx = 1;
     pricingPanel.add(taxes, gbcPricing);
 
-    JLabel calc = new JLabel("200$");
+    calc = new JLabel();
     calc.setFont(labelMedium);
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 1;
@@ -193,7 +203,7 @@ public class Home implements ActionListener, DateChangeListener {
     gbcPricing.weightx = 0;
     pricingPanel.add(calc, gbcPricing);
 
-    JLabel taxesPrice = new JLabel("20$");
+    taxesPrice = new JLabel();
     taxesPrice.setFont(labelMedium);
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 2;
@@ -210,7 +220,7 @@ public class Home implements ActionListener, DateChangeListener {
     gbcPricing.weightx = 0;
     pricingPanel.add(totalPricesLabel, gbcPricing);
 
-    JLabel totalPrices = new JLabel("220$");
+    totalPrices = new JLabel("220$");
     totalPrices.setFont(labelMedium);
     totalPrices.setForeground(new Color(0x2B8A3E));
     gbcPricing.gridx = 1;
@@ -230,7 +240,7 @@ public class Home implements ActionListener, DateChangeListener {
     JPanel helperButtom = new JPanel(new GridLayout());
     helperButtom.setBackground(new Color(0, 0, 0, 0));
     helperButtom.setAlignmentX(0.0f);
-    CustomButton confirmPayButton = new CustomButton();
+    confirmPayButton = new CustomButton();
     confirmPayButton.setBackground(new Color(0xFC6222));
     confirmPayButton.setForeground(new Color(0xFFFFFF));
     confirmPayButton.setText("Confirm & pay 200$");
@@ -525,11 +535,36 @@ public class Home implements ActionListener, DateChangeListener {
     LocalDate secondDate = endDatePicker.getDate();
     long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
 
-    if(diff >= 0){
-      System.out.println(diff);
+    if(diff > 0){
+      confirmPayButton.setEnabled(true);
+      confirmPayButton.setEffectColor(new Color(252, 255, 255));
+
+      checkOutDate.setText(secondDate.toString());
+      checkInDate.setText(firstDate.toString());
+      frame.repaint();
+
+
+      int res = (int) (100 * diff);
+      int  taxes = (int) (res * 0.1);
+
+      prices.setText("100$ x "+ diff + " nights");
+      calc.setText(res  + "$");
+      taxesPrice.setText(taxes + "$");
+
+      res += taxes;
+      totalPrices.setText(res + "$");
+      confirmPayButton.setText("Confirm & pay " + res + "$");
+      
     }else{
-      System.out.println("invalide");
+      confirmPayButton.setText("Invalide Dates");
+      confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
+      confirmPayButton.setEnabled(false);
+      prices.setText("100$");
+      calc.setText("");
+      taxesPrice.setText("");
+      totalPrices.setText("");
     }
+
 
   }
 
