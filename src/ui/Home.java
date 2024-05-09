@@ -1,7 +1,6 @@
 package ui;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import utils.navigation.Screen;
 

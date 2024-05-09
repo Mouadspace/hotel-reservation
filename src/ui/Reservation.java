@@ -17,15 +17,14 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
+import constants.COLORS;
 import mswing.CustomButton;
 import mswing.CustomField;
-import mswing.CustomFrame;
 import mswing.CustomPanel;
 import utils.ImgUtil;
 import utils.navigation.Screen;
 
 public class Reservation extends Screen implements ActionListener, DateChangeListener {
-  private JPanel frame;
   private CustomButton backButton;
   private DatePicker startDatePicker;
   private DatePicker endDatePicker;
@@ -53,7 +52,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
   public Reservation() throws FontFormatException, IOException{
     setLayout(new BorderLayout());
-    setBackground(new Color(0xF3F3F3));
+    setBackground(COLORS.background);
 
     // FONTS : 
     File font_file = new File("Poppins-Regular.ttf");
@@ -67,14 +66,14 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
     JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     headerPanel.setPreferredSize(new Dimension(0, 50));
-    headerPanel.setBackground(new Color(0xF3F3F3));
-    headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 51)));
+    headerPanel.setBackground(COLORS.background);
+    headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
 
 
 
 
     JPanel backIconHelper = new JPanel();
-    backIconHelper.setBackground(new Color(0, 0, 0, 0));
+    backIconHelper.setBackground(COLORS.transparent);
     backIconHelper.setBorder(BorderFactory.createEmptyBorder(0 ,0, 0, 0));
 
     backButton = new CustomButton();
@@ -82,7 +81,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     backButton.setFocusable(false);
     backButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     backButton.setBorderRadius(100);
-    backButton.setForeground(Color.red);
 
     
     // ADDING COMPONENTS TO HEADER
@@ -93,8 +91,8 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     // RIGHT SIDE PANEL
     JPanel summaryPanel = new JPanel();
     summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
-    summaryPanel.setBackground(new Color(255, 255, 255));
-    summaryPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(0, 0, 0, 51)));
+    summaryPanel.setBackground(COLORS.surface);
+    summaryPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, COLORS.lightGrey));
     summaryPanel.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
@@ -107,13 +105,13 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     statusPanel.setBackground(new Color(0, 0, 0, 0));
     JLabel statusLabel = new JLabel("available");
     statusLabel.setFont(labelSmall);
-    statusLabel.setForeground(new Color(0x2B8A3E));
+    statusLabel.setForeground(COLORS.success);
     statusPanel.setAlignmentX(0.0f);
     
     CustomPanel circle = new CustomPanel();
     circle.setRoundAll(100);
     circle.setPreferredSize(new Dimension(10, 10));
-    circle.setBackground(new Color(0x2B8A3E));
+    circle.setBackground(COLORS.success);
     
     statusPanel.add(circle);
     statusPanel.add(statusLabel);
@@ -127,7 +125,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     
     JPanel reservationPanel = new JPanel(new GridBagLayout());
     reservationPanel.setAlignmentX(0.0f);
-    reservationPanel.setBackground(new Color(0, 0, 0, 0));
+    reservationPanel.setBackground(COLORS.transparent);
     GridBagConstraints gbcResrvation = new GridBagConstraints();
 
     JLabel checkIn = new JLabel("Check-in");
@@ -214,7 +212,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
     JLabel totalPricesLabel = new JLabel("Total Price");
     totalPricesLabel.setFont(labelMedium);
-    totalPricesLabel.setForeground(new Color(0x2B8A3E));
+    totalPricesLabel.setForeground(COLORS.success);
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 3;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -223,7 +221,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
     totalPrices = new JLabel("220$");
     totalPrices.setFont(labelMedium);
-    totalPrices.setForeground(new Color(0x2B8A3E));
+    totalPrices.setForeground(COLORS.success);
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 3;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -242,8 +240,8 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     helperButtom.setBackground(new Color(0, 0, 0, 0));
     helperButtom.setAlignmentX(0.0f);
     confirmPayButton = new CustomButton();
-    confirmPayButton.setBackground(new Color(0xFC6222));
-    confirmPayButton.setForeground(new Color(0xFFFFFF));
+    confirmPayButton.setBackground(COLORS.primary);
+    confirmPayButton.setForeground(COLORS.surface);
     confirmPayButton.setText("Confirm & pay 200$");
     confirmPayButton.setFont(h6Font);
     confirmPayButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -336,19 +334,19 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       card.setIcon(new ImageIcon(ImgUtil.resizeImage("assets/"+cardsType[cardNumber]+".png", 40)));
       card.setFocusable(false);
       card.setBorder(padding1);
-      card.setBorder(1, cardNumber == 0 ? new Color(0x1971C2) : new Color(0 , 0, 0, 0) );
+      card.setBorder(1, cardNumber == 0 ? COLORS.secondary : COLORS.transparent );
       card.setBorderRadius(12);
       card.setPreferredSize(new Dimension(75, 50));
-      card.setEffectColor(new Color(25, 113, 194));
+      card.setEffectColor(COLORS.secondary);
       card.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent arg0) {
           for (Component btn : paymentOptionsContainer.getComponents()) {
             if (btn == card) {
-                ((CustomButton) btn).setBorder(1,new Color(0x1971C2));
+                ((CustomButton) btn).setBorder(1, COLORS.secondary);
                 btn.repaint();
             } else {
-                ((CustomButton) btn).setBorder(1,new Color(0 , 0, 0, 0) );
+                ((CustomButton) btn).setBorder(1, COLORS.transparent);
                 btn.repaint();
             }
         }
@@ -455,7 +453,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     gbcPayment.insets = new Insets(20, 0, 10, 0);
     ImageIcon infoWarning = new ImageIcon(ImgUtil.resizeImage("assets/info-warning.png", 15));
     warningLabel.setIcon(infoWarning);
-    // warningLabel.setToolTipText("CCV is the last 3 digits on the back of your credit card.");
     paymentPanel.add(warningLabel, gbcPayment);
 
     CustomPanel cancellationPolicyPanel = new CustomPanel();
@@ -516,8 +513,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     startDatePicker.addDateChangeListener(this);
     endDatePicker.addDateChangeListener(this);
 
-    // TO AVOID BUGS
-    // frame.setVisible(true);
   }
 
 
@@ -543,7 +538,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
       checkOutDate.setText(secondDate.toString());
       checkInDate.setText(firstDate.toString());
-      frame.repaint();
+      repaint();
 
 
       int res = (int) (100 * diff);

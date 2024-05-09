@@ -22,7 +22,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-
+import constants.COLORS;
 import model.User;
 import mswing.CustomButton;
 import utils.navigation.Screen;
@@ -128,26 +128,26 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
 
     JPanel topPanel = new JPanel();
-    topPanel.setBackground(new Color(0xFBFBFB));
+    topPanel.setBackground(COLORS.surface);
     topPanel.setPreferredSize(new Dimension(100,220));
     topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
     // topPanel.setBackground(Color.pink);
 
     JLabel signupLabel = new JLabel("Sign up");
     signupLabel.setFont(h5Font);
-    signupLabel.setForeground(new Color(0x6A70E0));
+    signupLabel.setForeground(COLORS.primary);
     signupLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(signupLabel, 60, 0, 0, 0);
     
     JLabel joinLabel = new JLabel("Join the community today!");
     joinLabel.setFont(labelSmall);
-    joinLabel.setForeground(new Color(0xC7C7C7));
+    joinLabel.setForeground(COLORS.grey);
     joinLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(joinLabel, 0, 0, 25, 0);
 
         
     CustomButton googleSignupButton = new CustomButton();    
-    googleSignupButton.setBackground(new Color(0x6A70E0));
+    googleSignupButton.setBackground(COLORS.primary);
     googleSignupButton.setForeground(Color.WHITE);
     googleSignupButton.setText("Use Google Account");
     googleSignupButton.setFocusable(false);
@@ -159,31 +159,31 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
     JLabel orLabel = new JLabel("or");
     orLabel.setFont(labelSmall);
-    orLabel.setForeground(new Color(0xC7C7C7));
+    orLabel.setForeground(COLORS.grey);
     orLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(orLabel, 25, 0, 25, 0);
 
 
     JPanel middlePanel = new JPanel();
-    middlePanel.setBackground(new Color(0xFBFBFB));
+    middlePanel.setBackground(COLORS.surface);
 
 
     JPanel middle = new JPanel();
     middle.setAlignmentX(JPanel.LEFT_ALIGNMENT);
     middle.setPreferredSize(new Dimension(300, 220));
     middle.setLayout(new BoxLayout(middle, BoxLayout.Y_AXIS));
-    middle.setBackground(new Color(0xFBFBFB));
+    middle.setBackground(COLORS.surface);
     setMargin(middle, 20, 0, 0, 0);
 
     
 
     JLabel loginLabel = new JLabel("Email");
     loginLabel.setFont(labelMedium);
-    loginLabel.setForeground(new Color(0xC7C7C7));
+    loginLabel.setForeground(COLORS.grey);
 
 
     loginField = new JTextField();
-    loginField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,new Color(0x6A70E0)));
+    loginField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,COLORS.primary));
 
 
 
@@ -194,10 +194,10 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
     JLabel passLabel = new JLabel("Password");
     passLabel.setFont(labelMedium);
-    passLabel.setForeground(new Color(0xC7C7C7));
+    passLabel.setForeground(COLORS.grey);
     
     passField = new JTextField();
-    passField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,new Color(0x6A70E0)));
+    passField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,COLORS.primary));
 
     passwordErr = new JLabel("weak password");
     passwordErr.setFont(labelSmall);
@@ -207,7 +207,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
     
 
     signupButton = new CustomButton();    
-    signupButton.setBackground(new Color(0x6A70E0));
+    signupButton.setBackground(COLORS.primary);
     signupButton.setForeground(Color.WHITE);
     signupButton.setText("Sign up");
     signupButton.setFocusable(false);
@@ -220,18 +220,18 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
     JLabel bLabel = new JLabel("Already a member?");
     bLabel.setFont(labelMedium);
-    bLabel.setForeground(new Color(0xC7C7C7));
+    bLabel.setForeground(COLORS.grey);
 
     linkLabel = new JLabel("Sign in");
     linkLabel.setFont(labelMedium);
-    linkLabel.setForeground(new Color(0x6A70E0));
+    linkLabel.setForeground(COLORS.primary);
     linkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     linkLabel.addMouseListener(this);
     
 
 
     JPanel bottomPanel = new JPanel();
-    bottomPanel.setBackground(new Color(0xFBFBFB));
+    bottomPanel.setBackground(COLORS.surface);
     bottomPanel.setPreferredSize(new Dimension(100,40));
     
 
