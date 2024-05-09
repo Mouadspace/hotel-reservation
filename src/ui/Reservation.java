@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +17,7 @@ import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import constants.COLORS;
+import constants.FONTS;
 import mswing.CustomButton;
 import mswing.CustomField;
 import mswing.CustomPanel;
@@ -55,14 +55,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     setBackground(COLORS.background);
 
     // FONTS : 
-    File font_file = new File("Poppins-Regular.ttf");
-    Font font = Font.createFont(Font.TRUETYPE_FONT, font_file);
-    Font h4Font = font.deriveFont(Font.BOLD,24f);
-    Font h5Font = font.deriveFont(Font.BOLD,20f);
-    Font h6Font = font.deriveFont(Font.BOLD,16f);
-
-    Font labelSmall = font.deriveFont(12f);
-    Font labelMedium = font.deriveFont(Font.BOLD,12f);
+    FONTS font = new FONTS();
 
     JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     headerPanel.setPreferredSize(new Dimension(0, 50));
@@ -104,7 +97,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     statusPanel.setBackground(new Color(0, 0, 0, 0));
     JLabel statusLabel = new JLabel("available");
-    statusLabel.setFont(labelSmall);
+    statusLabel.setFont(font.getLabel());
     statusLabel.setForeground(COLORS.success);
     statusPanel.setAlignmentX(0.0f);
     
@@ -120,7 +113,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
     
     JLabel reservationText = new JLabel("Your reservation summary");
-    reservationText.setFont(h5Font);
+    reservationText.setFont(font.getH5());
     reservationText.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
     
     JPanel reservationPanel = new JPanel(new GridBagLayout());
@@ -129,7 +122,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     GridBagConstraints gbcResrvation = new GridBagConstraints();
 
     JLabel checkIn = new JLabel("Check-in");
-    checkIn.setFont(labelSmall);
+    checkIn.setFont(font.getLabel());
     gbcResrvation.gridx = 0;
     gbcResrvation.gridy = 0;
     gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
@@ -137,7 +130,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     reservationPanel.add(checkIn, gbcResrvation);
 
     JLabel checkOut = new JLabel("Check-out");
-    checkOut.setFont(labelSmall);
+    checkOut.setFont(font.getLabel());
     gbcResrvation.gridx = 0;
     gbcResrvation.gridy = 1;
     gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
@@ -145,8 +138,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     reservationPanel.add(checkOut, gbcResrvation);
 
     checkInDate = new JLabel();
-    // checkInDate.setText("12-09-2024");
-    checkInDate.setFont(labelMedium);
+    checkInDate.setFont(font.getLabelBold());
     gbcResrvation.gridx = 1;
     gbcResrvation.gridy = 0;
     gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
@@ -154,8 +146,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     reservationPanel.add(checkInDate, gbcResrvation);
 
     checkOutDate = new JLabel();
-    // checkOutDate.setText("12-09-2024");
-    checkOutDate.setFont(labelMedium);
+    checkOutDate.setFont(font.getLabelBold());
     gbcResrvation.gridx = 1;
     gbcResrvation.gridy = 1;
     gbcResrvation.fill  = GridBagConstraints.HORIZONTAL;
@@ -169,7 +160,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     GridBagConstraints gbcPricing= new GridBagConstraints();
 
     JLabel pricingText = new JLabel("Pricing breakdown");
-    pricingText.setFont(h6Font);
+    pricingText.setFont(font.getH6());
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 0;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -178,7 +169,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
     prices = new JLabel("$100");
-    prices.setFont(labelSmall);
+    prices.setFont(font.getLabel());
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 1;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -187,7 +178,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(prices, gbcPricing);
 
     JLabel taxes = new JLabel("Taxes 10%");
-    taxes.setFont(labelSmall);
+    taxes.setFont(font.getLabel());
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 2;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -195,7 +186,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(taxes, gbcPricing);
 
     calc = new JLabel();
-    calc.setFont(labelMedium);
+    calc.setFont(font.getLabelBold());
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 1;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -203,7 +194,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(calc, gbcPricing);
 
     taxesPrice = new JLabel();
-    taxesPrice.setFont(labelMedium);
+    taxesPrice.setFont(font.getLabelBold());
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 2;
     gbcPricing.fill  = GridBagConstraints.HORIZONTAL;
@@ -211,7 +202,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(taxesPrice, gbcPricing);
 
     JLabel totalPricesLabel = new JLabel("Total Price");
-    totalPricesLabel.setFont(labelMedium);
+    totalPricesLabel.setFont(font.getLabelBold());
     totalPricesLabel.setForeground(COLORS.success);
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 3;
@@ -220,7 +211,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(totalPricesLabel, gbcPricing);
 
     totalPrices = new JLabel("220$");
-    totalPrices.setFont(labelMedium);
+    totalPrices.setFont(font.getLabelBold());
     totalPrices.setForeground(COLORS.success);
     gbcPricing.gridx = 1;
     gbcPricing.gridy = 3;
@@ -243,7 +234,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     confirmPayButton.setBackground(COLORS.primary);
     confirmPayButton.setForeground(COLORS.surface);
     confirmPayButton.setText("Confirm & pay 200$");
-    confirmPayButton.setFont(h6Font);
+    confirmPayButton.setFont(font.getH6());
     confirmPayButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
     helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
     confirmPayButton.setFocusable(false);
@@ -273,7 +264,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     datesPanel.setLayout(new GridBagLayout());
     
     JLabel startDate = new JLabel("Choose your starting date");
-    startDate.setFont(labelSmall);
+    startDate.setFont(font.getLabel());
     gbcDates.gridx = 0;
     gbcDates.gridy = 0;
     gbcDates.fill  = GridBagConstraints.HORIZONTAL;
@@ -281,7 +272,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     datesPanel.add(startDate, gbcDates);
 
     JLabel endDate = new JLabel("Choose your ending date");
-    endDate.setFont(labelSmall);
+    endDate.setFont(font.getLabel());
     gbcDates.gridx = 1;
     gbcDates.gridy = 0;
     gbcDates.fill  = GridBagConstraints.HORIZONTAL;
@@ -320,7 +311,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
     JLabel payementLabel = new JLabel("Payment method");
     payementLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
-    payementLabel.setFont(h4Font);
+    payementLabel.setFont(font.getH4());
     
 
     JPanel paymentOptionsContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -366,7 +357,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     
     
     JLabel cardholderLabel = new JLabel("Cardholder name");
-    cardholderLabel.setFont(labelSmall);
+    cardholderLabel.setFont(font.getLabel());
     GridBagConstraints gbcPayment = new GridBagConstraints();
     gbcPayment.gridx = 0;
     gbcPayment.gridy = 0;
@@ -385,7 +376,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     paymentPanel.add(cardholderFeild, gbcPayment);
 
     JLabel CardNumberLabel = new JLabel("Card number");
-    CardNumberLabel.setFont(labelSmall);
+    CardNumberLabel.setFont(font.getLabel());
     
     gbcPayment.gridx = 0;
     gbcPayment.gridy = 3;
@@ -404,7 +395,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     paymentPanel.add(cardNumberFeild, gbcPayment);
 
     JLabel dateExpLabel = new JLabel("Date");
-    dateExpLabel.setFont(labelSmall);
+    dateExpLabel.setFont(font.getLabel());
     gbcPayment.gridx = 1;
     gbcPayment.gridy = 3;
     gbcPayment.fill  = GridBagConstraints.HORIZONTAL;
@@ -422,7 +413,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     paymentPanel.add(dateExpFeild, gbcPayment);
 
     JLabel ccvLabel = new JLabel("CCV");
-    ccvLabel.setFont(labelSmall);
+    ccvLabel.setFont(font.getLabel());
     gbcPayment.gridx = 2;
     gbcPayment.gridy = 3;
     gbcPayment.fill  = GridBagConstraints.HORIZONTAL;
@@ -444,7 +435,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     paymentPanel.add(ccvFeild, gbcPayment);
 
     JLabel warningLabel = new JLabel("Credit card payments may take up 24h to be processed.");
-    warningLabel.setFont(labelSmall);
+    warningLabel.setFont(font.getLabel());
     gbcPayment.gridx = 0;
     gbcPayment.gridy = 5;
     gbcPayment.fill  = GridBagConstraints.HORIZONTAL;
@@ -460,7 +451,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     cancellationPolicyPanel.setRoundAll(12);
     cancellationPolicyPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
     JLabel text1 = new JLabel();
-    text1.setFont(labelSmall);
+    text1.setFont(font.getLabel());
     text1.setText("<html><b>Cancellation policy</b><br>Free Cancellation before <b>May 30</b><br>After that, the cancellation is non-refundable. <b><u>Learn more</u></b></html>");
     cancellationPolicyPanel.add(text1);
 

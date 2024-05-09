@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
@@ -23,6 +22,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import constants.COLORS;
+import constants.FONTS;
 import model.User;
 import mswing.CustomButton;
 import utils.navigation.Screen;
@@ -119,11 +119,8 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
 
     // FONTS : 
-    File font_file = new File("Poppins-Regular.ttf");
-    Font font = Font.createFont(Font.TRUETYPE_FONT, font_file);
-    Font h5Font = font.deriveFont(Font.BOLD,24f);
-    Font labelSmall = font.deriveFont(12f);
-    Font labelMedium = font.deriveFont(Font.BOLD,12f);
+    FONTS font = new FONTS();
+    
 
 
 
@@ -131,16 +128,15 @@ public class Register extends Screen implements ActionListener, MouseListener{
     topPanel.setBackground(COLORS.surface);
     topPanel.setPreferredSize(new Dimension(100,220));
     topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
-    // topPanel.setBackground(Color.pink);
 
     JLabel signupLabel = new JLabel("Sign up");
-    signupLabel.setFont(h5Font);
+    signupLabel.setFont(font.getH4());
     signupLabel.setForeground(COLORS.primary);
     signupLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(signupLabel, 60, 0, 0, 0);
     
     JLabel joinLabel = new JLabel("Join the community today!");
-    joinLabel.setFont(labelSmall);
+    joinLabel.setFont(font.getLabel());
     joinLabel.setForeground(COLORS.grey);
     joinLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(joinLabel, 0, 0, 25, 0);
@@ -158,7 +154,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
     googleSignupButton.setIconTextGap(10);
 
     JLabel orLabel = new JLabel("or");
-    orLabel.setFont(labelSmall);
+    orLabel.setFont(font.getLabel());
     orLabel.setForeground(COLORS.grey);
     orLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(orLabel, 25, 0, 25, 0);
@@ -178,7 +174,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
     
 
     JLabel loginLabel = new JLabel("Email");
-    loginLabel.setFont(labelMedium);
+    loginLabel.setFont(font.getLabelBold());
     loginLabel.setForeground(COLORS.grey);
 
 
@@ -188,19 +184,19 @@ public class Register extends Screen implements ActionListener, MouseListener{
 
 
     emailErr = new JLabel("not an email");
-    emailErr.setFont(labelSmall);
+    emailErr.setFont(font.getLabel());
     emailErr.setForeground(Color.red);
     emailErr.setVisible(false);
 
     JLabel passLabel = new JLabel("Password");
-    passLabel.setFont(labelMedium);
+    passLabel.setFont(font.getLabelBold());
     passLabel.setForeground(COLORS.grey);
     
     passField = new JTextField();
     passField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,COLORS.primary));
 
     passwordErr = new JLabel("weak password");
-    passwordErr.setFont(labelSmall);
+    passwordErr.setFont(font.getLabel());
     passwordErr.setForeground(Color.red);
     passwordErr.setVisible(false);
     
@@ -219,11 +215,11 @@ public class Register extends Screen implements ActionListener, MouseListener{
     helperPanel.add(signupButton);
 
     JLabel bLabel = new JLabel("Already a member?");
-    bLabel.setFont(labelMedium);
+    bLabel.setFont(font.getLabelBold());
     bLabel.setForeground(COLORS.grey);
 
     linkLabel = new JLabel("Sign in");
-    linkLabel.setFont(labelMedium);
+    linkLabel.setFont(font.getLabelBold());
     linkLabel.setForeground(COLORS.primary);
     linkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     linkLabel.addMouseListener(this);
