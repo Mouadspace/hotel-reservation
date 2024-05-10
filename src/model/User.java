@@ -32,6 +32,7 @@ public class User {
     this.email = email;
     this.password = password;
     DataBase.getStatement().executeUpdate("insert into user (email,password) values('"+email+"','"+password+"')");
+    
   }
 
   public boolean checkUser(String email) throws SQLException{

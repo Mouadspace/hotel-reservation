@@ -9,7 +9,7 @@ import ui.Home;
 import ui.Login;
 import ui.Register;
 import ui.Reservation;
-import ui.SavedHotels;
+import ui.ReservedRooms;
 import utils.navigation.ScreenManager;
 
 public class InitRoutes {
@@ -18,12 +18,15 @@ public class InitRoutes {
     ScreenManager screenManager = new ScreenManager();
     
     // ADD YOUR SCREENS HERE
+    screenManager.addScreen(new ReservedRooms(), "/reserved_rooms");
+    screenManager.addScreen(new Home(), "/home");
+    // Start here
     screenManager.addScreen(new Login(), "/login");
     screenManager.addScreen(new Register(), "/register");
     screenManager.addScreen(new Reservation(), "/reservation");
     screenManager.addScreen(new Home(), "/home");
     screenManager.addScreen(new AdminHome(), "/admin");
-    screenManager.addScreen(new SavedHotels(), "/saved_hotels");
+    // screenManager.addScreen(new ReservedRooms(), "/reserved_rooms");
 
 
 

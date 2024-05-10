@@ -14,6 +14,8 @@ public class FONTS {
   private Font h6;  
   private Font label;
   private Font labelBold;
+  private Font medium;
+  private Font mediumBold;
 
   public FONTS() throws FontFormatException, IOException{
     File font_file = new File("Poppins-Regular.ttf");
@@ -27,6 +29,8 @@ public class FONTS {
     h6 = font.deriveFont(Font.BOLD,16f);  
     label = font.deriveFont(12f);
     labelBold = font.deriveFont(Font.BOLD,12f); 
+    medium = font.deriveFont(14f);
+    mediumBold = font.deriveFont(Font.BOLD, 14f);
   }
 
   public Font getH1() {
@@ -59,5 +63,13 @@ public class FONTS {
 
   public Font getLabelBold() {
     return labelBold;
+  }
+
+  public Font getMedium() {
+    return medium;
+  }
+
+  public Font getMediumBold() {
+    return mediumBold;
   }
 }
