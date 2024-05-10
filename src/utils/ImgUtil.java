@@ -44,6 +44,10 @@ public class ImgUtil {
     Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     return scaledImage;
   } 
+  public static Image resizeImage(Image image, int width, int height) {
+    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    return scaledImage;
+  } 
 
   public static BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
     int w = image.getWidth();
@@ -69,6 +73,13 @@ public class ImgUtil {
     bufferedImage = makeRoundedCorner(bufferedImage, ((cornerRadius * bufferedImage.getWidth()) / width ));
     Image image = new ImageIcon(bufferedImage).getImage();
     return resizeImage(image, width);
+  }
+  public static Image makeRounedImage(String imagePath,  int cornerRadius, int width, int height) throws IOException{
+    File file = new File(imagePath);
+    BufferedImage bufferedImage = ImageIO.read(file);
+    bufferedImage = makeRoundedCorner(bufferedImage, ((cornerRadius * bufferedImage.getWidth()) / width ));
+    Image image = new ImageIcon(bufferedImage).getImage();
+    return resizeImage(image, width, height);
   }
   
 }
