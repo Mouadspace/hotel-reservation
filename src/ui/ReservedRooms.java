@@ -1,7 +1,10 @@
 package ui;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -200,7 +203,7 @@ public class ReservedRooms extends Screen implements ActionListener{
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BorderLayout());
 
-    JLabel roomOptionsLabel = new JLabel("Rooms options");
+    JLabel roomOptionsLabel = new JLabel("Your Reservations");
     roomOptionsLabel.setFont(font.getH4());
     roomOptionsLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     
@@ -224,24 +227,40 @@ public class ReservedRooms extends Screen implements ActionListener{
       JPanel cardRoomDetails = new JPanel();
       cardRoomDetails.setBackground(COLORS.transparent);
       cardRoomDetails.setLayout(new BoxLayout(cardRoomDetails, BoxLayout.Y_AXIS));
-      
-      JLabel roomPriceLabel = new JLabel((int)room.GetPrice() + "$/night");
-      roomPriceLabel.setFont(font.getLabelBold());
-      roomPriceLabel.setForeground(COLORS.primary);
-      roomPriceLabel.setAlignmentX(0.0f);
 
       JLabel roomTypeLabel = new JLabel(room.GetRoomName());
-      roomTypeLabel.setFont(font.getH6());    
+      roomTypeLabel.setFont(font.getH6()); 
+      
+      LocalDate cardDateIn = LocalDate.of(2024, 9, 12);
+      String dayNameIn = cardDateIn.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+      String monthNameIn = cardDateIn.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+      String dayIn = "12";
+
+      LocalDate cardDateOut = LocalDate.of(2024, 9, 15);
+      String dayNameOut = cardDateOut.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+      String monthNameOut = cardDateOut.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+      String dayOut = "15";
+
+      JLabel checkingDates = new JLabel(dayNameIn + " " + dayIn  + " " + monthNameIn + " - " + dayNameOut + " " + dayOut  + " " + monthNameOut);
+      checkingDates.setFont(font.getLabel());
+      checkingDates.setForeground(COLORS.grey);
+
       
       JLabel quantity = new JLabel("<html>4 people<br> 3 bedrooms<br> 3 bathrooms</html>");
       quantity.setFont(font.getLabel());
       quantity.setForeground(COLORS.grey);
 
+      JLabel roomPriceLabel = new JLabel(220 + "$");
+      roomPriceLabel.setFont(font.getMediumBold());
+      roomPriceLabel.setForeground(COLORS.primary);
+      roomPriceLabel.setAlignmentX(0.0f);
+      roomPriceLabel.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 0));
+
      
-      
-      cardRoomDetails.add(roomPriceLabel);
       cardRoomDetails.add(roomTypeLabel);
+      cardRoomDetails.add(checkingDates);
       cardRoomDetails.add(quantity);
+      cardRoomDetails.add(roomPriceLabel);
       
       roomCard.add(roomImage);
       roomCard.add(cardRoomDetails);
