@@ -71,6 +71,10 @@ public class ReservedRooms extends Screen{
     // ADDING THE HEADER
     headerPanel.add(new CustomTopBar());
 
+    // MAIN PANEL
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new BorderLayout());
+
     // RIGHT SIDE PANEL
     JPanel roomDetails = new JPanel();
     roomDetails.setLayout(new BoxLayout(roomDetails, BoxLayout.Y_AXIS));
@@ -194,32 +198,50 @@ public class ReservedRooms extends Screen{
     cancelButton.setFont(font.getLabel()); 
     // Set some action to the button
     cancelButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == cancelButton){
-                try {
-                  rightPanelRoom.cancelReservation();
-                  // navigateTo("/reserved_rooms");
-                } catch (SQLException e1) {
-                  // TODO Auto-generated catch block
-                  e1.printStackTrace();
-                }
-              }
-        }     
-      });
-    // Add the button to its Panel:
-    cancelPanel.add(cancelButton);
-    // Adding the cancel to the grid
-    totalPriceAndCancelPanelGridXY.gridx = 1;
-    totalPriceAndCancelPanelGridXY.gridy = 0;
-    totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
-    totalPriceAndCancelPanelGridXY.weightx = 0;
-    totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
-    totalPriceAndCancelPanel.setMaximumSize(new Dimension(320, totalPriceAndCancelPanel.getPreferredSize().height));
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          if (e.getSource() == cancelButton){
+            try {
+              rightPanelRoom.cancelReservation();
+              
+              // We'll get the new list of reservations
+              allReservations = Reservation.getReservations(4);
+              
+              // Change the content of the right panel
+              // rightPanelRoom = new Reservation(allReservations.get(0));
+              // roomType.setText(rightPanelRoom.getRoomType());
+              // totalPrice.setText(Double.toString(rightPanelRoom.getTotalPrice()) + "$");
+              // roomDetailsContent.setText(rightPanelRoom.getDescription());
+              // checkInDate.setText(getShortDate(rightPanelRoom.getCheckIn()));
+              // checkOutDate.setText(getShortDate(rightPanelRoom.getCheckOut()));
+              // roomDetailsContent.setText(rightPanelRoom.getDescription());
+              // try {
+              //   hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+rightPanelRoom.getImagePath(), 12, 280)));
+              // } catch (IOException e1) {
+              //   e1.printStackTrace();
+              // }
+              // roomDetails.repaint();
 
-    // MAIN PANEL
-    JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BorderLayout());
+              // Navigate back to home page
+              navigateTo("/home");
+
+            } catch (SQLException e1) {
+              e1.printStackTrace();
+            } 
+      }}     
+    });
+  // Add the button to its Panel:
+  cancelPanel.add(cancelButton);
+  // Adding the cancel to the grid
+  totalPriceAndCancelPanelGridXY.gridx = 1;
+  totalPriceAndCancelPanelGridXY.gridy = 0;
+  totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
+  totalPriceAndCancelPanelGridXY.weightx = 0;
+  totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
+  totalPriceAndCancelPanel.setMaximumSize(new Dimension(320, totalPriceAndCancelPanel.getPreferredSize().height));
+
+    
+    // Continue the code of the main panel
 
     JLabel roomOptionsLabel = new JLabel("Your Reservations");
     roomOptionsLabel.setFont(font.getH4());
@@ -283,14 +305,28 @@ public class ReservedRooms extends Screen{
       roomCard.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            // Here we're supposed to change the Right Panel Content
-            System.out.println("Room Clicked is: " + room.getRoomID() );
+             // Update the room details in the typePricePanel
+             rightPanelRoom = new Reservation(room);
+             roomType.setText(rightPanelRoom.getRoomType());
+             totalPrice.setText(Double.toString(rightPanelRoom.getTotalPrice()) + "$");
+             roomDetailsContent.setText(rightPanelRoom.getDescription());
+             checkInDate.setText(getShortDate(rightPanelRoom.getCheckIn()));
+             checkOutDate.setText(getShortDate(rightPanelRoom.getCheckOut()));
+             roomDetailsContent.setText(rightPanelRoom.getDescription());
+             try {
+               hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+rightPanelRoom.getImagePath(), 12, 280)));
+             } catch (IOException e1) {
+               e1.printStackTrace();
+             }
+             roomDetails.repaint();
           }
       });
     
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
     }
+
+    
 
 
     // ADDING COMPONENT TO THE MAIN PANEL 
