@@ -82,4 +82,28 @@ public class Room {
         }
         return ret;
     }
+
+    static public ArrayList<Room> GetRoomInBuilding(String building) throws SQLException
+    {
+        ArrayList<Room> ret = new ArrayList<Room>();
+        String query = "SELECT room.RoomID, Title, Building, Price FROM room INNER JOIN roomdetails ON room.RoomID = roomdetails.RoomID WHERE Building='" + building + "'";
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        while (resultSet.next())
+        {
+            ret.add(
+                new Room(
+                    resultSet.getInt(1), 
+                    resultSet.getString(2), 
+                    resultSet.getString(3), 
+                    resultSet.getFloat(4),
+                    resultSet.getString(5),
+                    resultSet.getInt(6),
+                    resultSet.getInt(7),
+                    resultSet.getInt(8),
+                    resultSet.getString(9)
+                )
+            );
+        }
+        return ret;
+    }
 }
