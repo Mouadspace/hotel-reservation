@@ -19,7 +19,7 @@ public class InitRoutes {
     ScreenManager screenManager = new ScreenManager();
     
     // ADD YOUR SCREENS HERE
-
+    
     // Start here
     screenManager.addScreen(new Home(), "/home");
     screenManager.addScreen(new Login(), "/login");

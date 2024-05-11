@@ -17,6 +17,7 @@ CREATE TABLE Client (
 CREATE TABLE Room (
     RoomID INT PRIMARY KEY AUTO_INCREMENT,
     roomType VARCHAR(50),
+    Title VARCHAR(50),
     Price DECIMAL(10, 2),
     imagePath VARCHAR(50)
 );
