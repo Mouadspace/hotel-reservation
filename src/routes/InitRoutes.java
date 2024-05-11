@@ -14,10 +14,14 @@ import ui.Reservation;
 import utils.navigation.ScreenManager;
 
 public class InitRoutes {
+  
+  public static ScreenManager screenManager;
+
   public InitRoutes() throws FontFormatException, IOException, SQLException{
     CustomFrame frame = new CustomFrame();
-    ScreenManager screenManager = new ScreenManager();
-    
+    //ScreenManager screenManager = new ScreenManager();
+    screenManager = new ScreenManager();
+
     // ADD YOUR SCREENS HERE
     
     // Start here
