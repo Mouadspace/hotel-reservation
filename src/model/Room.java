@@ -86,7 +86,7 @@ public class Room {
     static public ArrayList<Room> GetRoomInBuilding(String building) throws SQLException
     {
         ArrayList<Room> ret = new ArrayList<Room>();
-        String query = "SELECT room.RoomID, Title, Building, Price FROM room INNER JOIN roomdetails ON room.RoomID = roomdetails.RoomID WHERE Building='" + building + "'";
+        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID WHERE Building='" + building + "'";
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
         {
