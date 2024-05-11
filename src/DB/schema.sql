@@ -1,3 +1,9 @@
+DROP TABLE ROOMDETAILS;
+DROP TABLE ADMIN;
+DROP TABLE RESERVATION;
+DROP TABLE ROOM;
+DROP TABLE CLIENT;
+
 -- Create Client table
 CREATE TABLE Client (
     ClientID INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,9 +16,9 @@ CREATE TABLE Client (
 -- Create Room table
 CREATE TABLE Room (
     RoomID INT PRIMARY KEY AUTO_INCREMENT,
-    Title VARCHAR(50),
+    roomType VARCHAR(50),
     Price DECIMAL(10, 2),
-    Image      BLOB
+    imagePath VARCHAR(50)
 );
 
 -- Create Reservation table
@@ -40,10 +46,8 @@ CREATE TABLE RoomDetails (
     RoomID INT,
     Max_Members INT,               
     Bathroom INT,
+    Bedroom INT,
     Description VARCHAR(200),
     Building VARCHAR(10),
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID)
-    
 );
-
---------------------------------------------------------

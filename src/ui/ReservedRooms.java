@@ -71,6 +71,10 @@ public class ReservedRooms extends Screen{
     // ADDING THE HEADER
     headerPanel.add(new CustomTopBar());
 
+    // MAIN PANEL
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new BorderLayout());
+
     // RIGHT SIDE PANEL
     JPanel roomDetails = new JPanel();
     roomDetails.setLayout(new BoxLayout(roomDetails, BoxLayout.Y_AXIS));
@@ -199,7 +203,9 @@ public class ReservedRooms extends Screen{
             if (e.getSource() == cancelButton){
                 try {
                   rightPanelRoom.cancelReservation();
-                  // navigateTo("/reserved_rooms");
+                  mainPanel.repaint();
+                  roomDetails.repaint();
+
                 } catch (SQLException e1) {
                   // TODO Auto-generated catch block
                   e1.printStackTrace();
@@ -217,9 +223,6 @@ public class ReservedRooms extends Screen{
     totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
     totalPriceAndCancelPanel.setMaximumSize(new Dimension(320, totalPriceAndCancelPanel.getPreferredSize().height));
 
-    // MAIN PANEL
-    JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BorderLayout());
 
     JLabel roomOptionsLabel = new JLabel("Your Reservations");
     roomOptionsLabel.setFont(font.getH4());
@@ -284,7 +287,10 @@ public class ReservedRooms extends Screen{
           @Override
           public void mouseClicked(MouseEvent e) {
             // Here we're supposed to change the Right Panel Content
-            System.out.println("Room Clicked is: " + room.getRoomID() );
+            // System.out.println("Room Clicked is: " + room.getRoomID() );
+            rightPanelRoom = new Reservation(room);
+            mainPanel.repaint();
+            roomDetails.repaint();
           }
       });
     
