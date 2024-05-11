@@ -12,7 +12,6 @@ import mswing.CustomAdminCustomers;
 import mswing.CustomAdminPriceAndDiscount;
 import mswing.CustomAdminRoomAvailability;
 import mswing.CustomAdminSidebar;
-import mswing.CustomFrame;
 import utils.navigation.Screen;
 
 public class AdminHome extends Screen{
