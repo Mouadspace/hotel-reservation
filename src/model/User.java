@@ -31,12 +31,12 @@ public class User {
   public void setUser(String email,String password) throws SQLException{
     this.email = email;
     this.password = password;
-    DataBase.getStatement().executeUpdate("insert into user (email,password) values('"+email+"','"+password+"')");
+    DataBase.getStatement().executeUpdate("insert into client (email,password) values('"+email+"','"+password+"')");
     
   }
 
   public boolean checkUser(String email) throws SQLException{
-    String query = "select email from user where email='"+email+"'";
+    String query = "select email from client where email='"+email+"'";
     ResultSet resultSet = DataBase.getStatement().executeQuery(query);
     boolean isFound = false;
 
@@ -48,7 +48,7 @@ public class User {
 
   public boolean checkUser(String email,String password) throws SQLException{
     // System.out.println("email:"+email+",pass"+password);
-    String query = "select email from user where email='"+email+"' and password='"+password+"'";
+    String query = "select email from client where email='"+email+"' and password='"+password+"'";
     ResultSet resultSet = DataBase.getStatement().executeQuery(query);
     boolean isFound = false;
 
