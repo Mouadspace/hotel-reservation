@@ -199,6 +199,7 @@ public class ReservedRooms extends Screen{
             if (e.getSource() == cancelButton){
                 try {
                   rightPanelRoom.cancelReservation();
+                  // navigateTo("/reserved_rooms");
                 } catch (SQLException e1) {
                   // TODO Auto-generated catch block
                   e1.printStackTrace();
