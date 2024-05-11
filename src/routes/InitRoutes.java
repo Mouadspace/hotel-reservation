@@ -2,6 +2,7 @@ package routes;
 
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import mswing.CustomFrame;
 import ui.AdminHome;
@@ -13,13 +14,12 @@ import ui.ReservedRooms;
 import utils.navigation.ScreenManager;
 
 public class InitRoutes {
-  public InitRoutes() throws FontFormatException, IOException{
+  public InitRoutes() throws FontFormatException, IOException, SQLException{
     CustomFrame frame = new CustomFrame();
     ScreenManager screenManager = new ScreenManager();
     
     // ADD YOUR SCREENS HERE
     screenManager.addScreen(new ReservedRooms(), "/reserved_rooms");
-    screenManager.addScreen(new Home(), "/home");
     // Start here
     screenManager.addScreen(new Login(), "/login");
     screenManager.addScreen(new Register(), "/register");
@@ -27,11 +27,6 @@ public class InitRoutes {
     screenManager.addScreen(new Home(), "/home");
     screenManager.addScreen(new AdminHome(), "/admin");
     // screenManager.addScreen(new ReservedRooms(), "/reserved_rooms");
-
-
-
-
-
 
 
     frame.add(screenManager);

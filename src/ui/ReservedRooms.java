@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -8,12 +9,17 @@ import java.util.Locale;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 import javax.swing.*;
 
+// import org.w3c.dom.events.MouseEvent;
+
 import constants.COLORS;
 import constants.FONTS;
-import model.Room;
+import model.Reservation;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
@@ -21,29 +27,36 @@ import mswing.CustomTopBar;
 import utils.ImgUtil;
 import utils.navigation.Screen;
 
-public class ReservedRooms extends Screen implements ActionListener{
+public class ReservedRooms extends Screen{
+
   private CustomButton chooseDateButton;
-  ArrayList<Room> rooms = new ArrayList<Room>();
 
-    // Getting data form the database
-    // Image of the cancellation Panel - LEFT Panel:
-    String rightPanelImage = "connecting-rooms.jpg";
-    // Room type - LEFT Panel:
-    String rightPanelRoomType = "Connection Room";
-    // Check In:
-    String rightPanelCheckIn = "12-09-2024";
-    // Check Out:
-    String rightPanelCheckOut = "15-09-2024";
-    // Total Price - LEFT Panel:
-    Integer totalPriceRightPanel = 220;    
-    // Cancelation date - LEFT Panel
-    Boolean freeCancellation = true;
+  // Here we just initialize the array of the reservations of the user 
+  // and the Room in the right panel
+  private Reservation rightPanelRoom;
+  ArrayList<Reservation> allReservations = new ArrayList<Reservation>();
 
 
-  public ReservedRooms() throws FontFormatException, IOException{
-    rooms.add(new Room(1, "Connecting room", "A1", 100f));
-    rooms.add(new Room(2, "Business room", "A1", 350f));
+  // This function is to get a string of a day in letters, in number and the month
+  // Example: date = 2024-05-20 -> funtion return = Thu 05 May
+  public String getShortDate(LocalDate date) {
+    String dayName = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+    String monthName = date.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+    int day = date.getDayOfMonth();
 
+    String shortDate = dayName + " " + day + " " + monthName;
+
+    return shortDate;
+  }
+
+
+  public ReservedRooms() throws FontFormatException, IOException, SQLException{
+    // Here we get the reservations and set the default right panel room
+    // All Reservations
+    allReservations = Reservation.getReservations(4);
+    // Default Right Panel ROOM
+    rightPanelRoom = new Reservation(allReservations.get(0));
+    
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
 
@@ -66,12 +79,12 @@ public class ReservedRooms extends Screen implements ActionListener{
     roomDetails.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+rightPanelImage, 12, 280)));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+rightPanelRoom.getImagePath(), 12, 280)));
     // Here we use the border as margin or padding
     hotelImage.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
-    JLabel roomType = new JLabel(rightPanelRoomType);
+    JLabel roomType = new JLabel(rightPanelRoom.getRoomType());
     roomType.setFont(font.getH5());
     roomType.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
 
@@ -99,7 +112,7 @@ public class ReservedRooms extends Screen implements ActionListener{
     checkingsGridXY.weightx = 1;
     CheckingsPanel.add(checkOut, checkingsGridXY);
 
-    JLabel checkInDate = new JLabel(rightPanelCheckIn);
+    JLabel checkInDate = new JLabel(getShortDate(rightPanelRoom.getCheckIn()));
     checkInDate.setFont(font.getLabelBold());
     checkInDate.setForeground(new Color(0x222831));
     checkingsGridXY.gridx = 1;
@@ -108,7 +121,7 @@ public class ReservedRooms extends Screen implements ActionListener{
     checkingsGridXY.weightx = 0;
     CheckingsPanel.add(checkInDate, checkingsGridXY);
 
-    JLabel checkOutDate = new JLabel(rightPanelCheckOut);
+    JLabel checkOutDate = new JLabel(getShortDate(rightPanelRoom.getCheckOut()));
     checkOutDate.setFont(font.getLabelBold());
     checkOutDate.setForeground(new Color(0x222831));
     checkingsGridXY.gridx = 1;
@@ -123,7 +136,7 @@ public class ReservedRooms extends Screen implements ActionListener{
     roomDetailsLabel.setFont(font.getMediumBold());
     roomDetailsLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
 
-    JTextArea roomDetailsContent = new JTextArea("Soundproofed Air conditioning Free cots/infant beds Flat-screen TV Hairdryer Bathrobes Free bottled water Espresso maker");
+    JTextArea roomDetailsContent = new JTextArea(rightPanelRoom.getDescription());
     roomDetailsContent.setFont(font.getLabel());
     roomDetailsContent.setForeground(new Color(0x222831));
     roomDetailsContent.setLineWrap(true);
@@ -156,10 +169,9 @@ public class ReservedRooms extends Screen implements ActionListener{
     totalPriceAndCancelPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
     totalPriceAndCancelPanel.setAlignmentX(0.0f);
     totalPriceAndCancelPanel.setBackground(new Color(0, 0, 0, 0));
-    // totalPriceAndCancelPanel.setBackground(Color.red);
     GridBagConstraints totalPriceAndCancelPanelGridXY = new GridBagConstraints();
 
-    JLabel totalPrice = new JLabel(totalPriceRightPanel.toString()+"$");
+    JLabel totalPrice = new JLabel(rightPanelRoom.getTotalPrice()+"$");
     totalPrice.setFont(font.getH4());
     totalPrice.setForeground(new Color(0xFC6222));
     totalPriceAndCancelPanelGridXY.gridx = 0;
@@ -185,13 +197,18 @@ public class ReservedRooms extends Screen implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == cancelButton){
-                System.out.println("Cancel button clicked");
+                try {
+                  rightPanelRoom.cancelReservation();
+                } catch (SQLException e1) {
+                  // TODO Auto-generated catch block
+                  e1.printStackTrace();
+                }
               }
         }     
       });
     // Add the button to its Panel:
     cancelPanel.add(cancelButton);
-    // Addin the cancel to the grid
+    // Adding the cancel to the grid
     totalPriceAndCancelPanelGridXY.gridx = 1;
     totalPriceAndCancelPanelGridXY.gridy = 0;
     totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
@@ -212,7 +229,7 @@ public class ReservedRooms extends Screen implements ActionListener{
     roomListPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
 
-    for (Room room: rooms){
+    for (Reservation room: allReservations){
       CustomPanel roomCard = new CustomPanel();
       roomCard.setLayout(new FlowLayout(FlowLayout.LEFT));
       roomCard.setBackground(COLORS.surface);
@@ -221,36 +238,30 @@ public class ReservedRooms extends Screen implements ActionListener{
       roomCard.setCursor(new Cursor(Cursor.HAND_CURSOR));
       
       JLabel roomImage = new JLabel();
-      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 130, 100)));
+      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+room.getImagePath(), 12, 130, 100)));
       roomImage.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 10));
 
       JPanel cardRoomDetails = new JPanel();
       cardRoomDetails.setBackground(COLORS.transparent);
       cardRoomDetails.setLayout(new BoxLayout(cardRoomDetails, BoxLayout.Y_AXIS));
 
-      JLabel roomTypeLabel = new JLabel(room.GetRoomName());
+      JLabel roomTypeLabel = new JLabel(room.getRoomType());
       roomTypeLabel.setFont(font.getH6()); 
       
-      LocalDate cardDateIn = LocalDate.of(2024, 9, 12);
-      String dayNameIn = cardDateIn.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-      String monthNameIn = cardDateIn.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-      String dayIn = "12";
+      String shortDateIn = getShortDate(room.getCheckIn());
 
-      LocalDate cardDateOut = LocalDate.of(2024, 9, 15);
-      String dayNameOut = cardDateOut.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-      String monthNameOut = cardDateOut.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-      String dayOut = "15";
-
-      JLabel checkingDates = new JLabel(dayNameIn + " " + dayIn  + " " + monthNameIn + " - " + dayNameOut + " " + dayOut  + " " + monthNameOut);
+      String shortDateOut = getShortDate(room.getCheckOut());
+      
+      JLabel checkingDates = new JLabel(shortDateIn + " - " + shortDateOut);
       checkingDates.setFont(font.getLabel());
       checkingDates.setForeground(COLORS.grey);
 
       
-      JLabel quantity = new JLabel("<html>4 people<br> 3 bedrooms<br> 3 bathrooms</html>");
+      JLabel quantity = new JLabel("<html>"+ room.getMaxMembers() +" People <br>"+ room.getBedrooms() +" Bedrooms<br>"+ room.getBathrooms() +" Bathrooms</html>");
       quantity.setFont(font.getLabel());
       quantity.setForeground(COLORS.grey);
 
-      JLabel roomPriceLabel = new JLabel(220 + "$");
+      JLabel roomPriceLabel = new JLabel(room.getTotalPrice() + "$");
       roomPriceLabel.setFont(font.getMediumBold());
       roomPriceLabel.setForeground(COLORS.primary);
       roomPriceLabel.setAlignmentX(0.0f);
@@ -265,6 +276,16 @@ public class ReservedRooms extends Screen implements ActionListener{
       roomCard.add(roomImage);
       roomCard.add(cardRoomDetails);
       roomCard.setMaximumSize(new Dimension(Math.max(roomCard.getPreferredSize().width, 370), roomCard.getPreferredSize().height));
+
+      // Add an ActionListener to the roomCard
+      // Here we change the content of the Right Panel Room
+      roomCard.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            // Here we're supposed to change the Right Panel Content
+            System.out.println("Room Clicked is: " + room.getRoomID() );
+          }
+      });
     
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
@@ -312,22 +333,8 @@ public class ReservedRooms extends Screen implements ActionListener{
 
 
 
-    // ADDING LISTENERS 
-    chooseDateButton.addActionListener(this);
-
-
   }
 
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    if( e.getSource() == chooseDateButton){
-      navigateTo("/reservation");
-    }
-  }
-
-
-
-  
 
 }

@@ -1,11 +1,12 @@
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import routes.InitRoutes;
 
 public class App {
     
-    public App() throws FontFormatException, IOException {
+    public App() throws FontFormatException, IOException, SQLException {
         new InitRoutes();
     }
 
