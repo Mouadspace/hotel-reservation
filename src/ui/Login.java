@@ -42,7 +42,6 @@ public class Login extends Screen implements ActionListener, MouseListener{
   public Login() throws FontFormatException, IOException{
     initComponents();
     user = new User();
-    
   }
 
   private void setMargin(JComponent cmp,int top, int left, int bottom, int right){
@@ -71,6 +70,7 @@ public class Login extends Screen implements ActionListener, MouseListener{
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
+          //setUser
           navigateTo("/home");
         }
         else if (Admin.checkAdmin(email, pass))
@@ -97,12 +97,9 @@ public class Login extends Screen implements ActionListener, MouseListener{
   public void initComponents() throws FontFormatException, IOException{
     setLayout(new BorderLayout());
 
-
-
     // FONTS : 
     FONTS font = new FONTS();
-    
-
+  
 
     JPanel topPanel = new JPanel();
     topPanel.setBackground(COLORS.surface);

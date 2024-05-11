@@ -5,8 +5,10 @@ import java.sql.SQLException;
 import DB.DataBase;
 
 public class User {
+  //private int userID;
   private String email;
   private String password;
+  public boolean isLoggedIn=false;
 
   
   public User(){

@@ -1,10 +1,14 @@
 package ui;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -23,14 +27,8 @@ public class Home extends Screen implements ActionListener{
   ArrayList<Room> rooms = new ArrayList<Room>();
 
 
-
-
-
-
-
-  public Home() throws FontFormatException, IOException{
-    rooms.add(new Room(1, "Connecting room", "A1", 100f));
-    rooms.add(new Room(2, "Business room", "A1", 350f));
+  public Home() throws FontFormatException, IOException, SQLException{
+    rooms=Room.GetRooms();
 
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
@@ -44,13 +42,10 @@ public class Home extends Screen implements ActionListener{
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
 
 
-    
     // ADDING THE HEADER
     headerPanel.add(new CustomTopBar());
 
-
-
-
+    Room firstRoom = rooms.get(0);
     // RIGHT SIDE PANEL
     JPanel roomDetails = new JPanel();
     roomDetails.setLayout(new BoxLayout(roomDetails, BoxLayout.Y_AXIS));
@@ -59,7 +54,7 @@ public class Home extends Screen implements ActionListener{
     roomDetails.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 280)));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(firstRoom.getImage(), 12, 280)));
     hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
@@ -68,11 +63,11 @@ public class Home extends Screen implements ActionListener{
     typePricePanel.setLayout(new BoxLayout(typePricePanel, BoxLayout.X_AXIS));
     typePricePanel.setBackground(COLORS.transparent);
     
-    JLabel roomPrice = new JLabel((int)rooms.get(0).GetPrice() + "$/night");
+    JLabel roomPrice = new JLabel((int)firstRoom.getPrice() + "$/night");
     roomPrice.setFont(font.getLabelBold());
     roomPrice.setForeground(COLORS.primary);
     
-    JLabel roomType = new JLabel(rooms.get(0).GetRoomName());
+    JLabel roomType = new JLabel(firstRoom.getRoomName());
     roomType.setFont(font.getH5());
     
     typePricePanel.add(roomType);
@@ -87,7 +82,7 @@ public class Home extends Screen implements ActionListener{
     roomDetailsLabel.setFont(font.getLabelBold());
     roomDetailsLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
 
-    JTextArea roomDetailsContent = new JTextArea("Soundproofed Air conditioning Free cots/infant beds Flat-screen TV Hairdryer Bathrobes Free bottled water Espresso maker");
+    JTextArea roomDetailsContent = new JTextArea(firstRoom.getDescription());
     roomDetailsContent.setFont(font.getLabelBold());
     roomDetailsContent.setForeground(COLORS.grey);
     roomDetailsContent.setLineWrap(true);
@@ -138,27 +133,26 @@ public class Home extends Screen implements ActionListener{
       roomCard.setCursor(new Cursor(Cursor.HAND_CURSOR));
       
       JLabel roomImage = new JLabel();
-      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 130, 100)));
+      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(room.getImage(), 12, 130, 100)));
       roomImage.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 10));
 
       JPanel cardRoomDetails = new JPanel();
       cardRoomDetails.setBackground(COLORS.transparent);
       cardRoomDetails.setLayout(new BoxLayout(cardRoomDetails, BoxLayout.Y_AXIS));
       
-      JLabel roomPriceLabel = new JLabel((int)room.GetPrice() + "$/night");
+      JLabel roomPriceLabel = new JLabel((int)room.getPrice() + "$/night");
       roomPriceLabel.setFont(font.getLabelBold());
       roomPriceLabel.setForeground(COLORS.primary);
       roomPriceLabel.setAlignmentX(0.0f);
 
-      JLabel roomTypeLabel = new JLabel(room.GetRoomName());
+      JLabel roomTypeLabel = new JLabel(room.getRoomName());
       roomTypeLabel.setFont(font.getH6());    
       
-      JLabel quantity = new JLabel("<html>4 people<br> 3 bedrooms<br> 3 bathrooms</html>");
+      JLabel quantity = new JLabel("<html>" + room.getMembers() + " people<br> " + room.getBedrooms() + " bedrooms<br> " + room.getBathrooms() + " bathrooms</html>");
       quantity.setFont(font.getLabel());
       quantity.setForeground(COLORS.grey);
 
      
-      
       cardRoomDetails.add(roomPriceLabel);
       cardRoomDetails.add(roomTypeLabel);
       cardRoomDetails.add(quantity);
@@ -166,7 +160,28 @@ public class Home extends Screen implements ActionListener{
       roomCard.add(roomImage);
       roomCard.add(cardRoomDetails);
       roomCard.setMaximumSize(new Dimension(Math.max(roomCard.getPreferredSize().width, 370), roomCard.getPreferredSize().height));
-    
+
+      // Add a MouseListener to the roomCard
+      roomCard.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            
+            // Update the room details in the typePricePanel
+            roomType.setText(room.getRoomName());
+            roomPrice.setText((int) room.getPrice() + "$/night");
+            roomDetailsContent.setText(room.getDescription());
+            try {
+              hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(room.getImage(), 12, 280)));
+            } catch (IOException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
+
+            // Repaint the roomDetails panel to reflect the changes
+            roomDetails.repaint();
+          }
+      }); 
+
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
     }
@@ -182,7 +197,7 @@ public class Home extends Screen implements ActionListener{
     chooseDateButton = new CustomButton();
     chooseDateButton.setBackground(COLORS.primary);
     chooseDateButton.setForeground(COLORS.surface);
-    chooseDateButton.setText("choose your date");
+    chooseDateButton.setText("Book now");
     chooseDateButton.setFont(font.getH6());
     chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
     helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
@@ -226,8 +241,5 @@ public class Home extends Screen implements ActionListener{
     }
   }
 
-
-
-  
 
 }

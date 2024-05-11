@@ -182,6 +182,6 @@ public class Reservation {
         int reservationId = this.ReservationID;
         String query = "DELETE FROM Reservation WHERE ReservationID = " + reservationId;
         // Assuming you already have a connection object
-        int rowsAffected = DataBase.getStatement().executeUpdate(query);
+        DataBase.getStatement().executeUpdate(query);
     }
 }
