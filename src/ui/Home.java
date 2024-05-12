@@ -54,7 +54,7 @@ public class Home extends Screen implements ActionListener{
     roomDetails.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(firstRoom.getImage(), 12, 280)));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+firstRoom.getImage(), 12, 280)));
     hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
@@ -133,7 +133,7 @@ public class Home extends Screen implements ActionListener{
       roomCard.setCursor(new Cursor(Cursor.HAND_CURSOR));
       
       JLabel roomImage = new JLabel();
-      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(room.getImage(), 12, 130, 100)));
+      roomImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+room.getImage(), 12, 130, 100)));
       roomImage.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 10));
 
       JPanel cardRoomDetails = new JPanel();
@@ -171,7 +171,7 @@ public class Home extends Screen implements ActionListener{
             roomPrice.setText((int) room.getPrice() + "$/night");
             roomDetailsContent.setText(room.getDescription());
             try {
-              hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage(room.getImage(), 12, 280)));
+              hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+room.getImage(), 12, 280)));
             } catch (IOException e1) {
               // TODO Auto-generated catch block
               e1.printStackTrace();

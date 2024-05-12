@@ -28,6 +28,36 @@ public class CustomTopBar extends Screen {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         FONTS font = new FONTS();
         JLabel logo = new JLabel(new ImageIcon(ImgUtil.resizeImage("assets/logo.png", 40)));
+
+        JLabel userReservations = new JLabel(user.isLoggedIn ? "Reservation" : "");
+        userReservations.setFont(font.getLabel());
+        userReservations.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+
+        userReservations.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (user.isLoggedIn) {
+                    navigateTo("/reserved_rooms");
+                } 
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
         
         JLabel account=new JLabel(user.isLoggedIn ? "Sign out" : "Sign in");
         account.setFont(font.getLabel());
@@ -40,10 +70,12 @@ public class CustomTopBar extends Screen {
                     navigateTo("/home");
                     user.isLoggedIn = false;
                     account.setText("Sign in");
+                    userReservations.setText("");
                 } else {
                     navigateTo("/login");
                     user.isLoggedIn = true;
                     account.setText("Sign out");
+                    userReservations.setText("Reservations");
                 }
             }
 
@@ -78,6 +110,7 @@ public class CustomTopBar extends Screen {
         add(Box.createHorizontalGlue());
         add(searchPanel);
         add(Box.createHorizontalGlue());
+        add(userReservations);
         add(account);
         setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
