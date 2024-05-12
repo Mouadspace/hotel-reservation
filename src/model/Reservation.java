@@ -227,9 +227,10 @@ public class Reservation {
         ArrayList<Reservation> result = new ArrayList<Reservation>();
         String query = "SELECT  rsv.ReservationID, rm.roomID, rsv.TotalPrice, rsv.CheckInDate, \n" + //
                         "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
-                        "dt.Bedroom, dt.Description FROM reservation rsv\n" + //
+                        "dt.Bedroom, dt.Description, cl.ClientID, cl.Name, cl.Email FROM reservation rsv\n" + //
                         "JOIN room rm ON rsv.RoomID = rm.RoomID\n" + //
                         "JOIN roomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "JOIN client cl ON rsv.ClientID=cl.ClientID\n" +
                         "WHERE rsv.RoomID = " + RoomID ;
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
@@ -246,14 +247,15 @@ public class Reservation {
                     resultSet.getInt(8),
                     resultSet.getInt(9),
                     resultSet.getInt(10),
-                    resultSet.getString(11)
+                    resultSet.getString(11),
+                    resultSet.getInt(12),
+                    resultSet.getString(13),
+                    resultSet.getString(14)
                 ) 
             );
         }
         return result;
     }
-
-    
 
     // This is to cancel the reservation:
     public void cancelReservation() throws SQLException {
