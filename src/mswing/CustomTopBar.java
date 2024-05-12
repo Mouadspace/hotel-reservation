@@ -4,12 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -23,13 +18,12 @@ import java.awt.GridLayout;
 import java.io.IOException;
 
 import utils.navigation.Screen;
-import utils.navigation.ScreenManager;
 
 
 
-public class CustomTopBar extends JPanel {
+public class CustomTopBar extends Screen {
     public CustomTopBar() throws FontFormatException, IOException{
-        User user=new User(); // User instance
+        User user=new User(); //user instance
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         FONTS font = new FONTS();
@@ -38,12 +32,12 @@ public class CustomTopBar extends JPanel {
         JLabel account=new JLabel(user.isLoggedIn ? "Sign out" : "Sign in");
         account.setFont(font.getLabel());
 
-       /*   // Add ActionListener to the "Sign in" link
-        account.addActionListener(new ActionListener() {
+        account.addMouseListener(new MouseListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (user.isLoggedIn) {
-                    navigateTo("/register");
+                    navigateTo("/home");
                     user.isLoggedIn = false;
                     account.setText("Sign in");
                 } else {
@@ -52,7 +46,24 @@ public class CustomTopBar extends JPanel {
                     account.setText("Sign out");
                 }
             }
-        });  */
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+            
+        }); 
 
         CustomPanel searchPanel = new CustomPanel();
         searchPanel.setLayout(new GridLayout());
