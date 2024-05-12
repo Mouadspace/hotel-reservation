@@ -18,17 +18,20 @@ import model.Room;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
-
+import routes.InitRoutes;
 import utils.ImgUtil;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 public class Home extends Screen implements ActionListener{
   private CustomButton chooseDateButton;
   ArrayList<Room> rooms = new ArrayList<Room>();
+  private Room currentCard;
 
 
   public Home() throws FontFormatException, IOException, SQLException{
     rooms=Room.GetRooms();
+    currentCard = rooms.get(0);
 
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
@@ -112,6 +115,33 @@ public class Home extends Screen implements ActionListener{
     roomFeaturesPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 
+    JPanel helperButtom = new JPanel(new GridLayout());
+    helperButtom.setBackground(new Color(0, 0, 0, 0));
+    helperButtom.setAlignmentX(0.0f);
+    chooseDateButton = new CustomButton();
+    chooseDateButton.setBackground(COLORS.primary);
+    chooseDateButton.setForeground(COLORS.surface);
+    chooseDateButton.setText("Book now");
+    chooseDateButton.setFont(font.getH6());
+    chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+    chooseDateButton.setFocusable(false);
+    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
+    helperButtom.add(chooseDateButton);
+
+
+    // ADDING COMPONENTS TO SUMMARY PANEL
+    roomDetails.add(hotelImage);
+    roomDetails.add(typePricePanel);
+    roomDetails.add(roomDetailsLabel);
+    roomDetails.add(roomDetailsContent);
+    roomDetails.add(roomFeaturesLabel);
+    roomDetails.add(roomFeaturesPanel);
+
+    roomDetails.add(Box.createVerticalGlue());
+    roomDetails.add(helperButtom);
+
+    // MAIN PANEL
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BorderLayout());
 
@@ -179,11 +209,14 @@ public class Home extends Screen implements ActionListener{
 
             // Repaint the roomDetails panel to reflect the changes
             roomDetails.repaint();
+            currentCard = room;
+
           }
       }); 
 
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
+      
     }
 
 
@@ -191,31 +224,7 @@ public class Home extends Screen implements ActionListener{
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
     mainPanel.add(roomListPanel, BorderLayout.CENTER);
 
-    JPanel helperButtom = new JPanel(new GridLayout());
-    helperButtom.setBackground(new Color(0, 0, 0, 0));
-    helperButtom.setAlignmentX(0.0f);
-    chooseDateButton = new CustomButton();
-    chooseDateButton.setBackground(COLORS.primary);
-    chooseDateButton.setForeground(COLORS.surface);
-    chooseDateButton.setText("Book now");
-    chooseDateButton.setFont(font.getH6());
-    chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
-    chooseDateButton.setFocusable(false);
-    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
-    helperButtom.add(chooseDateButton);
-
-
-    // ADDING COMPONENTS TO SUMMARY PANEL
-    roomDetails.add(hotelImage);
-    roomDetails.add(typePricePanel);
-    roomDetails.add(roomDetailsLabel);
-    roomDetails.add(roomDetailsContent);
-    roomDetails.add(roomFeaturesLabel);
-    roomDetails.add(roomFeaturesPanel);
-
-    roomDetails.add(Box.createVerticalGlue());
-    roomDetails.add(helperButtom);
+    
 
 
     
@@ -237,7 +246,13 @@ public class Home extends Screen implements ActionListener{
   @Override
   public void actionPerformed(ActionEvent e) {
     if( e.getSource() == chooseDateButton){
-      navigateTo("/reservation");
+      try {
+        ScreenManager sm = InitRoutes.screenManager; 
+        sm.add(new Reservation(currentCard), "/reservation");
+        navigateTo("/reservation");
+      } catch (FontFormatException | IOException e1) {
+        e1.printStackTrace();
+      }
     }
   }
 

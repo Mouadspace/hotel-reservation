@@ -18,11 +18,14 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import constants.COLORS;
 import constants.FONTS;
+import model.Room;
 import mswing.CustomButton;
 import mswing.CustomField;
 import mswing.CustomPanel;
+import routes.InitRoutes;
 import utils.ImgUtil;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 public class Reservation extends Screen implements ActionListener, DateChangeListener {
   private CustomButton backButton;
@@ -35,7 +38,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   private JLabel totalPrices;
   private JLabel taxesPrice;
   private CustomButton confirmPayButton;
-
+  private Room room;
 
 
 
@@ -50,7 +53,8 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
 
-  public Reservation() throws FontFormatException, IOException{
+  public Reservation(Room selectedRoom) throws FontFormatException, IOException{
+    room = selectedRoom;
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
 
@@ -89,7 +93,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     summaryPanel.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 280)));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/" + room.getImage(), 12, 280)));
     hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
@@ -168,7 +172,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(pricingText, gbcPricing);
 
 
-    prices = new JLabel("$100");
+    prices = new JLabel((int)room.getPrice() + "$");
     prices.setFont(font.getLabel());
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 1;
@@ -210,7 +214,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     gbcPricing.weightx = 0;
     pricingPanel.add(totalPricesLabel, gbcPricing);
 
-    totalPrices = new JLabel("220$");
+    totalPrices = new JLabel((int)room.getPrice() + "$");
     totalPrices.setFont(font.getLabelBold());
     totalPrices.setForeground(COLORS.success);
     gbcPricing.gridx = 1;
@@ -510,8 +514,9 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == backButton){
-      System.out.println("back icon clicked");
+      ScreenManager sm =  InitRoutes.screenManager;
       navigateTo("/home");
+      sm.remove(this);
     }
   }
 
@@ -523,6 +528,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     LocalDate secondDate = endDatePicker.getDate();
     long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
 
+    int price = (int) room.getPrice();
     if(diff > 0){
       confirmPayButton.setEnabled(true);
       confirmPayButton.setEffectColor(new Color(252, 255, 255));
@@ -532,10 +538,10 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       repaint();
 
 
-      int res = (int) (100 * diff);
+      int res = (int) (price * diff);
       int  taxes = (int) (res * 0.1);
 
-      prices.setText("100$ x "+ diff + " nights");
+      prices.setText(price + "$ x "+ diff + " nights");
       calc.setText(res  + "$");
       taxesPrice.setText(taxes + "$");
 
@@ -547,7 +553,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       confirmPayButton.setText("Invalide Dates");
       confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
       confirmPayButton.setEnabled(false);
-      prices.setText("100$");
+      prices.setText(price + "$");
       calc.setText("");
       taxesPrice.setText("");
       totalPrices.setText("");

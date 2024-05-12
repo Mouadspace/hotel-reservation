@@ -29,7 +29,6 @@ public class InitRoutes {
     screenManager.addScreen(new Home(), "/home");
     screenManager.addScreen(new Login(), "/login");
     screenManager.addScreen(new Register(), "/register");
-    screenManager.addScreen(new Reservation(), "/reservation");
     screenManager.addScreen(new AdminHome(), "/admin");
     screenManager.addScreen(new ReservedRooms(), "/reserved_rooms");
 
