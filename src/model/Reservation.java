@@ -154,7 +154,7 @@ public class Reservation {
                         "dt.Bedroom, dt.Description FROM Reservation rsv\n" + //
                         "JOIN Room rm ON rsv.RoomID = rm.RoomID\n" + //
                         "JOIN RoomDetails dt ON rm.RoomID = dt.RoomID\n" + //
-                        "WHERE rsv.ClientID = 4" ;
+                        "WHERE rsv.ClientID = " + ClientID ;
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
         {

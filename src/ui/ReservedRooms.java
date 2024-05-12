@@ -51,15 +51,10 @@ public class ReservedRooms extends Screen{
 
 
   public ReservedRooms() throws FontFormatException, IOException, SQLException{
-    // Here we get the reservations and set the default right panel room
-    // All Reservations
-    allReservations = Reservation.getReservations(4);
-    // Default Right Panel ROOM
-    rightPanelRoom = new Reservation(allReservations.get(0));
-    
-    setLayout(new BorderLayout());
-    setBackground(COLORS.background);
+    // Here we get the instance of the connected user:
+    int ClientID = 4;
 
+    // Setting some Panels that we're going to need in both cases (if there is any reservations or there isn't)
     // FONTS : 
     FONTS font = new FONTS();
 
@@ -67,13 +62,30 @@ public class ReservedRooms extends Screen{
     headerPanel.setPreferredSize(new Dimension(0, 50));
     headerPanel.setBackground(COLORS.background);
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
-    
+     
     // ADDING THE HEADER
     headerPanel.add(new CustomTopBar());
-
+ 
     // MAIN PANEL
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BorderLayout());
+
+    // Here we get the reservations and set the default right panel room
+    // All Reservations
+    allReservations = Reservation.getReservations(ClientID);
+
+    if (allReservations.isEmpty()) {
+      JLabel noReservations = new JLabel("You have no reservations, go check some room that you might like.");
+      mainPanel.add(noReservations, BorderLayout.CENTER);
+    } else {
+
+    // Default Right Panel ROOM
+    rightPanelRoom = new Reservation(allReservations.get(0));
+    
+    setLayout(new BorderLayout());
+    setBackground(COLORS.background);
+
+   
 
     // RIGHT SIDE PANEL
     JPanel roomDetails = new JPanel();
@@ -206,21 +218,6 @@ public class ReservedRooms extends Screen{
               
               // We'll get the new list of reservations
               allReservations = Reservation.getReservations(4);
-              
-              // Change the content of the right panel
-              // rightPanelRoom = new Reservation(allReservations.get(0));
-              // roomType.setText(rightPanelRoom.getRoomType());
-              // totalPrice.setText(Double.toString(rightPanelRoom.getTotalPrice()) + "$");
-              // roomDetailsContent.setText(rightPanelRoom.getDescription());
-              // checkInDate.setText(getShortDate(rightPanelRoom.getCheckIn()));
-              // checkOutDate.setText(getShortDate(rightPanelRoom.getCheckOut()));
-              // roomDetailsContent.setText(rightPanelRoom.getDescription());
-              // try {
-              //   hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+rightPanelRoom.getImagePath(), 12, 280)));
-              // } catch (IOException e1) {
-              //   e1.printStackTrace();
-              // }
-              // roomDetails.repaint();
 
               // Navigate back to home page
               navigateTo("/home");
@@ -230,15 +227,15 @@ public class ReservedRooms extends Screen{
             } 
       }}     
     });
-  // Add the button to its Panel:
-  cancelPanel.add(cancelButton);
-  // Adding the cancel to the grid
-  totalPriceAndCancelPanelGridXY.gridx = 1;
-  totalPriceAndCancelPanelGridXY.gridy = 0;
-  totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
-  totalPriceAndCancelPanelGridXY.weightx = 0;
-  totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
-  totalPriceAndCancelPanel.setMaximumSize(new Dimension(320, totalPriceAndCancelPanel.getPreferredSize().height));
+    // Add the button to its Panel:
+    cancelPanel.add(cancelButton);
+    // Adding the cancel to the grid
+    totalPriceAndCancelPanelGridXY.gridx = 1;
+    totalPriceAndCancelPanelGridXY.gridy = 0;
+    totalPriceAndCancelPanelGridXY.fill  = GridBagConstraints.HORIZONTAL;
+    totalPriceAndCancelPanelGridXY.weightx = 0;
+    totalPriceAndCancelPanel.add(cancelPanel, totalPriceAndCancelPanelGridXY);
+    totalPriceAndCancelPanel.setMaximumSize(new Dimension(320, totalPriceAndCancelPanel.getPreferredSize().height));
 
     
     // Continue the code of the main panel
@@ -364,12 +361,13 @@ public class ReservedRooms extends Screen{
     
 
     // ADDING PANELES TO FRAME
-    add(headerPanel, BorderLayout.NORTH);
-    add(mainPanel, BorderLayout.CENTER);
+    // Here is the Room Details, cause we'll use only if there is rooms
     add(roomDetails, BorderLayout.EAST);
 
-
-
+  }
+  // The rest of the panels.
+  add(headerPanel, BorderLayout.NORTH);
+  add(mainPanel, BorderLayout.CENTER);
   }
 
 
