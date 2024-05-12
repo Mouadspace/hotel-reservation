@@ -2,6 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import DB.DataBase;
@@ -57,6 +58,17 @@ public class Room {
     }
     public String getDescription(){
         return this.description;
+    }
+
+    
+    public boolean IsRoomCurrentlyReserved() throws SQLException
+    {
+        LocalDate now = LocalDate.now();
+        String query = "SELECT ReservationID FROM reservation WHERE RoomID=" + this.roomID + " AND CheckInDate<'" + now.toString() + "' AND CheckOutDate>'" + now.toString() + "'";
+        System.out.println(query);
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        if (resultSet.next()) return true;
+        return false;
     }
 
     static public ArrayList<Room> GetRooms() throws SQLException
