@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import model.Building;
 
 public class CustomAdminRoomAvailability extends JPanel {
-    public CustomAdminRoomAvailability() throws IOException, FontFormatException, SQLException
+    public CustomAdminRoomAvailability(JPanel cards) throws IOException, FontFormatException, SQLException
     {
         // Import font file
         File font_file = new File("Poppins-Regular.ttf");
@@ -57,7 +57,7 @@ public class CustomAdminRoomAvailability extends JPanel {
         // Creating the panels
         for (String buildingName : buildings)
         {
-            mainContentContainer.add(new CustomRoomAvailabilityCard(buildingName));
+            mainContentContainer.add(new CustomRoomAvailabilityCard(buildingName, cards));
             mainContentContainer.add(Box.createVerticalStrut(10));
         }
 

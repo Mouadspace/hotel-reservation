@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -32,7 +33,7 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
     private int gridGap = 15;
     private int rowHeight = gridGap + 98;
     private int numberOfRoomsPerRow = 4;
-    public CustomRoomAvailabilityCard(String building) throws IOException, FontFormatException, SQLException
+    public CustomRoomAvailabilityCard(String building, JPanel cards) throws IOException, FontFormatException, SQLException
     {
         ArrayList<Room> rooms = Room.GetRoomInBuilding(building);
         if (rooms.size() == 0)
@@ -105,15 +106,17 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
 
         for (int i = 0; i < rooms.size(); i++) 
         {
-            _CustomRoundedPanel roundedPanel = new _CustomRoundedPanel();
+            _CustomRoundedPanel roundedPanel = new _CustomRoundedPanel(); // Create small panel to diplay room
+            CustomAdminRoomManagement roomCard = new CustomAdminRoomManagement(rooms.get(i), cards); // Create the interface for this room management
+            cards.add(roomCard, Integer.toString(rooms.get(i).getRoomID()));
 
             if (rooms.get(i).IsRoomCurrentlyReserved()) // Set background color of the rounded panel
             {
-                roundedPanel.setBackground(occupiedColor); 
+                roundedPanel.setBackground(occupiedColor);
             }
             else
             {
-                roundedPanel.setBackground(openColor); 
+                roundedPanel.setBackground(openColor);
             }
 
             // Create a label for the room name
@@ -125,6 +128,8 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
             roundedPanel.setLayout(new BorderLayout()); // Set layout to BorderLayout
             roundedPanel.add(roomLabel, BorderLayout.CENTER); // Add the label to the center of the rounded panel
         
+            final int final_i = i; // Workaround to make i final and use it inside of a class
+
             // Add a MouseListener to change cursor
             roundedPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
@@ -135,6 +140,13 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent e) {
                     roundedPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+
+                
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    // Action for Option clicked
+                    CardLayout cardLayout = (CardLayout) cards.getLayout();
+                    cardLayout.show(cards, Integer.toString(rooms.get(final_i).getRoomID()));
                 }
             });
 

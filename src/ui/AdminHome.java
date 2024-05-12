@@ -30,8 +30,10 @@ public class AdminHome extends Screen{
         add(cards, BorderLayout.CENTER);
         try
         {
-            CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability();
+            CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability(cards);
             cards.add(roomAvailabilityPanel, "Room Availability");
+            CardLayout cardLayout = (CardLayout) cards.getLayout();
+            cardLayout.show(cards, "Room Availability");
         }
         catch (SQLException e)
         {
