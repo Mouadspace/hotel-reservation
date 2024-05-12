@@ -15,7 +15,11 @@ import mswing.CustomAdminSidebar;
 import utils.navigation.Screen;
 
 public class AdminHome extends Screen{
-    JPanel cards;
+    static JPanel cards;
+    static CustomAdminSidebar sideBar;
+    static CustomAdminRoomAvailability roomAvailabilityPanel;
+    static CustomAdminPriceAndDiscount priceAndDiscount;
+    static CustomAdminCustomers customers;
     public AdminHome() throws IOException, FontFormatException 
     {
         setLayout(new BorderLayout());
@@ -23,26 +27,42 @@ public class AdminHome extends Screen{
         cards = new JPanel(new CardLayout());
 
         // Add sidebar to the admin interface
-        CustomAdminSidebar sideBar = new CustomAdminSidebar(cards);
+        sideBar = new CustomAdminSidebar(cards);
         
         add(sideBar, BorderLayout.WEST);
 
         add(cards, BorderLayout.CENTER);
         try
         {
-            CustomAdminRoomAvailability roomAvailabilityPanel = new CustomAdminRoomAvailability();
+            roomAvailabilityPanel = new CustomAdminRoomAvailability(cards);
             cards.add(roomAvailabilityPanel, "Room Availability");
+            CardLayout cardLayout = (CardLayout) cards.getLayout();
+            cardLayout.show(cards, "Room Availability");
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
 
-        CustomAdminPriceAndDiscount priceAndDiscount = new CustomAdminPriceAndDiscount();
+        priceAndDiscount = new CustomAdminPriceAndDiscount();
         cards.add(priceAndDiscount, "Pricing & Discounts");
 
-        CustomAdminCustomers customers = new CustomAdminCustomers();
+        customers = new CustomAdminCustomers();
         cards.add(customers, "Customers");
 
+    }
+
+    // Setting is as static is just a workaround to make it possible to refresh a card
+    // THIS CLASS IS NOT SUPPOSED TO BE USED AS A STATIC CLASS!!
+    public static void RefreshRoomAvailability()
+    {
+        try
+        {
+            roomAvailabilityPanel.Refresh();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

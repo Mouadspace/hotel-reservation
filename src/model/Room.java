@@ -18,10 +18,12 @@ public class Room {
         int bathrooms;
         int bedrooms;
         String description;
+        String title;
 
-    public Room(int roomID, String roomName, String building, float price, String image,int members,int bathrooms, int bedrooms, String description)
+    public Room(int roomID, String title, String roomName, String building, float price, String image,int members,int bathrooms, int bedrooms, String description)
     {
         this.roomID = roomID;
+        this.title = title;
         this.roomName = roomName;
         this.building = building;
         this.price = price;
@@ -59,6 +61,10 @@ public class Room {
     public String getDescription(){
         return this.description;
     }
+    public String getTitle()
+    {
+        return this.title;
+    }
 
     
     public boolean IsRoomCurrentlyReserved() throws SQLException
@@ -70,16 +76,28 @@ public class Room {
         return false;
     }
 
+    public void Drop() throws SQLException
+    {
+        // Drom the room and all other references to it
+        String reservationQuery = "DELETE FROM reservation WHERE RoomID=" + Integer.toString(this.roomID);
+        String roomDetailsQuery = "DELETE FROM roomdetails WHERE RoomID=" + Integer.toString(this.roomID);
+        String roomQuery = "DELETE FROM room WHERE RoomID=" + Integer.toString(this.roomID);
+        DataBase.getStatement().executeUpdate(reservationQuery);
+        DataBase.getStatement().executeUpdate(roomDetailsQuery);
+        DataBase.getStatement().executeUpdate(roomQuery);
+    }
+
     static public ArrayList<Room> GetRooms() throws SQLException
     {
         ArrayList<Room> ret = new ArrayList<Room>();
-        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID";
+        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description, R.Title FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID";
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
         {
             ret.add(
                 new Room(
                     resultSet.getInt(1), 
+                    resultSet.getString(10),
                     resultSet.getString(2), 
                     resultSet.getString(3), 
                     resultSet.getFloat(4),
@@ -97,13 +115,14 @@ public class Room {
     static public ArrayList<Room> GetRoomInBuilding(String building) throws SQLException
     {
         ArrayList<Room> ret = new ArrayList<Room>();
-        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID WHERE Building='" + building + "'";
+        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description, R.Title FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID WHERE Building='" + building + "'";
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
         {
             ret.add(
                 new Room(
                     resultSet.getInt(1), 
+                    resultSet.getString(10),
                     resultSet.getString(2), 
                     resultSet.getString(3), 
                     resultSet.getFloat(4),
