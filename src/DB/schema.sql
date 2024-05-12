@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS ROOMDETAILS;
-DROP TABLE IF EXISTS ADMIN;
-DROP TABLE IF EXISTS RESERVATION;
-DROP TABLE IF EXISTS ROOM;
-DROP TABLE IF EXISTS CLIENT;
+DROP TABLE IF EXISTS roomdetails;
+DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS reservation;
+DROP TABLE IF EXISTS room;
+DROP TABLE IF EXISTS client;
 
 -- Create Client table
-CREATE TABLE Client (
+CREATE TABLE client (
     ClientID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100),
     Email VARCHAR(100),
@@ -14,7 +14,7 @@ CREATE TABLE Client (
 );
 
 -- Create Room table
-CREATE TABLE Room (
+CREATE TABLE room (
     RoomID INT PRIMARY KEY AUTO_INCREMENT,
     roomType VARCHAR(50),
     Title VARCHAR(50),
@@ -23,7 +23,7 @@ CREATE TABLE Room (
 );
 
 -- Create Reservation table
-CREATE TABLE Reservation (
+CREATE TABLE reservation (
     ReservationID INT PRIMARY KEY AUTO_INCREMENT,
     ClientID INT,
     RoomID INT,
@@ -36,13 +36,13 @@ CREATE TABLE Reservation (
 );
 
 -- Create Admin table
-CREATE TABLE Admin (
+CREATE TABLE admin (
     AdminID INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100),
     Password VARCHAR(100)
 );
 -- Create Admin table
-CREATE TABLE RoomDetails (
+CREATE TABLE roomdetails (
     RoomDetailID INT PRIMARY KEY AUTO_INCREMENT,
     RoomID INT,
     Max_Members INT,               
