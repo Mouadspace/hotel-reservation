@@ -177,6 +177,37 @@ public class Reservation {
         return result;
     }
     
+    // Use this to get reservations by using the room ID
+    static public ArrayList<Reservation> getReservationsByRoom(int RoomID) throws SQLException {
+        ArrayList<Reservation> result = new ArrayList<Reservation>();
+        String query = "SELECT  rsv.ReservationID, rm.roomID, rsv.TotalPrice, rsv.CheckInDate, \n" + //
+                        "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
+                        "dt.Bedroom, dt.Description FROM Reservation rsv\n" + //
+                        "JOIN Room rm ON rsv.RoomID = rm.RoomID\n" + //
+                        "JOIN RoomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "WHERE rsv.RoomID = " + RoomID ;
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        while (resultSet.next())
+        {
+            result.add(
+                new Reservation(
+                    resultSet.getInt(1), 
+                    resultSet.getInt(2),
+                    resultSet.getDouble(3),
+                    resultSet.getDate(4).toLocalDate(),
+                    resultSet.getDate(5).toLocalDate(),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getInt(8),
+                    resultSet.getInt(9),
+                    resultSet.getInt(10),
+                    resultSet.getString(11)
+                ) 
+            );
+        }
+        return result;
+    }
+
     // This is to cancel the reservation:
     public void cancelReservation() throws SQLException {
         int reservationId = this.ReservationID;
