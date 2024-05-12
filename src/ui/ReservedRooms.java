@@ -20,6 +20,7 @@ import javax.swing.*;
 import constants.COLORS;
 import constants.FONTS;
 import model.Reservation;
+import model.User;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
@@ -50,7 +51,7 @@ public class ReservedRooms extends Screen{
   }
 
 
-  public ReservedRooms() throws FontFormatException, IOException, SQLException{
+  public ReservedRooms(User client) throws FontFormatException, IOException, SQLException{
     // Here we get the instance of the connected user:
     int ClientID = 4;
 
@@ -68,7 +69,7 @@ public class ReservedRooms extends Screen{
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
      
     // ADDING THE HEADER
-    headerPanel.add(new CustomTopBar());
+    headerPanel.add(new CustomTopBar(client));
  
     // MAIN PANEL
     JPanel mainPanel = new JPanel();

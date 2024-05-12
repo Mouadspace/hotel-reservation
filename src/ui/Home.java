@@ -15,6 +15,7 @@ import javax.swing.*;
 import constants.COLORS;
 import constants.FONTS;
 import model.Room;
+import model.User;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
@@ -27,9 +28,11 @@ public class Home extends Screen implements ActionListener{
   private CustomButton chooseDateButton;
   ArrayList<Room> rooms = new ArrayList<Room>();
   private Room currentCard;
+  private User client;
 
 
-  public Home() throws FontFormatException, IOException, SQLException{
+  public Home(User client) throws FontFormatException, IOException, SQLException{
+    this.client = client;
     rooms=Room.GetRooms();
     currentCard = rooms.get(0);
 
@@ -46,7 +49,7 @@ public class Home extends Screen implements ActionListener{
 
 
     // ADDING THE HEADER
-    headerPanel.add(new CustomTopBar());
+    headerPanel.add(new CustomTopBar(client));
 
     Room firstRoom = rooms.get(0);
     // RIGHT SIDE PANEL
@@ -203,7 +206,6 @@ public class Home extends Screen implements ActionListener{
             try {
               hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+room.getImage(), 12, 280)));
             } catch (IOException e1) {
-              // TODO Auto-generated catch block
               e1.printStackTrace();
             }
 
@@ -248,7 +250,7 @@ public class Home extends Screen implements ActionListener{
     if( e.getSource() == chooseDateButton){
       try {
         ScreenManager sm = InitRoutes.screenManager; 
-        sm.add(new Reservation(currentCard), "/reservation");
+        sm.add(new Reservation(currentCard, client), "/reservation");
         navigateTo("/reservation");
       } catch (FontFormatException | IOException e1) {
         e1.printStackTrace();

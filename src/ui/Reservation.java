@@ -19,6 +19,7 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import constants.COLORS;
 import constants.FONTS;
 import model.Room;
+import model.User;
 import mswing.CustomButton;
 import mswing.CustomField;
 import mswing.CustomPanel;
@@ -39,6 +40,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   private JLabel taxesPrice;
   private CustomButton confirmPayButton;
   private Room room;
+  private User client;
 
 
 
@@ -53,7 +55,9 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
 
-  public Reservation(Room selectedRoom) throws FontFormatException, IOException{
+  public Reservation(Room selectedRoom, User client) throws FontFormatException, IOException{
+    this.client = client;
+    System.out.println(client.getEmail() + " - " +client.getUserID());
     room = selectedRoom;
     setLayout(new BorderLayout());
     setBackground(COLORS.background);

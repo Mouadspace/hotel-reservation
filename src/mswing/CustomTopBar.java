@@ -16,20 +16,21 @@ import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import utils.navigation.Screen;
 
 
 
 public class CustomTopBar extends Screen {
-    public CustomTopBar() throws FontFormatException, IOException{
-        User user=new User(); //user instance
+    public CustomTopBar(User client) throws FontFormatException, IOException{
+        // User user=new User(); //user instance
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         FONTS font = new FONTS();
         JLabel logo = new JLabel(new ImageIcon(ImgUtil.resizeImage("assets/logo.png", 40)));
 
-        JLabel userReservations = new JLabel(user.isLoggedIn ? "Reservation" : "");
+        JLabel userReservations = new JLabel(client.isLoggedIn ? "Reservation" : "");
         userReservations.setFont(font.getLabel());
         userReservations.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
@@ -37,7 +38,7 @@ public class CustomTopBar extends Screen {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (user.isLoggedIn) {
+                if (client.isLoggedIn) {
                     navigateTo("/reserved_rooms");
                 } 
             }
@@ -59,21 +60,26 @@ public class CustomTopBar extends Screen {
             }
         });
         
-        JLabel account=new JLabel(user.isLoggedIn ? "Sign out" : "Sign in");
+        JLabel account=new JLabel(client.isLoggedIn ? "Sign out" : "Sign in");
         account.setFont(font.getLabel());
 
         account.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (user.isLoggedIn) {
-                    navigateTo("/home");
-                    user.isLoggedIn = false;
-                    account.setText("Sign in");
-                    userReservations.setText("");
+                if (client.isLoggedIn) {
+                    try {
+                        navigateTo("/home");
+                        client.isLoggedIn = false;
+                        client.setUser(0, null, null);
+                        account.setText("Sign in");
+                        userReservations.setText("");
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                 } else {
                     navigateTo("/login");
-                    user.isLoggedIn = true;
+                    client.isLoggedIn = true;
                     account.setText("Sign out");
                     userReservations.setText("Reservations");
                 }
