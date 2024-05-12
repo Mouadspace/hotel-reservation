@@ -24,6 +24,8 @@ public class Reservation {
     private String email;
     
 
+    public Reservation() {
+    }
     public int getReservationID() {
         return ReservationID;
     }
@@ -138,6 +140,8 @@ public class Reservation {
         this.bedrooms = bedrooms;
         this.description = description;
     }
+
+    
 
     public Reservation(
         int ReservationID, 
@@ -264,4 +268,9 @@ public class Reservation {
         // Assuming you already have a connection object
         DataBase.getStatement().executeUpdate(query);
     }
+
+    public void saveReservationToDb(int userId, int roomId,LocalDate ci, LocalDate co, float total ) throws SQLException{
+        System.out.println(ci + " | " + co);
+        DataBase.getStatement().executeUpdate("insert into reservation (clientid, roomid, checkindate, checkoutdate, totalprice) values("+userId+","+roomId+", '"+ci+"', '"+co+"', "+total+")");
+      }
 }
