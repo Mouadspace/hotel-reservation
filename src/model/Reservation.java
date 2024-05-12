@@ -182,9 +182,9 @@ public class Reservation {
         ArrayList<Reservation> result = new ArrayList<Reservation>();
         String query = "SELECT  rsv.ReservationID, rm.roomID, rsv.TotalPrice, rsv.CheckInDate, \n" + //
                         "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
-                        "dt.Bedroom, dt.Description FROM Reservation rsv\n" + //
-                        "JOIN Room rm ON rsv.RoomID = rm.RoomID\n" + //
-                        "JOIN RoomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "dt.Bedroom, dt.Description FROM reservation rsv\n" + //
+                        "JOIN room rm ON rsv.RoomID = rm.RoomID\n" + //
+                        "JOIN roomDetails dt ON rm.RoomID = dt.RoomID\n" + //
                         "WHERE rsv.RoomID = " + RoomID ;
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
