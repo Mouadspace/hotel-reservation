@@ -65,7 +65,6 @@ public class Room {
     {
         LocalDate now = LocalDate.now();
         String query = "SELECT ReservationID FROM reservation WHERE RoomID=" + this.roomID + " AND CheckInDate<'" + now.toString() + "' AND CheckOutDate>'" + now.toString() + "'";
-        System.out.println(query);
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         if (resultSet.next()) return true;
         return false;
