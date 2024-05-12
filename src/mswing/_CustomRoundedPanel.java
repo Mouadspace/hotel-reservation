@@ -14,11 +14,16 @@ public class _CustomRoundedPanel extends JPanel {
 
     public _CustomRoundedPanel()
     {
-        this (new Dimension(480, 300));
+        this (new Dimension(480, 350));
     }
 
     public _CustomRoundedPanel(Dimension dim) {
         setOpaque(false); // Make the panel transparent so that the rounded corners are visible
+        this.dimensions = dim;
+    }
+
+    public void SetDimensions(Dimension dim)
+    {
         this.dimensions = dim;
     }
 

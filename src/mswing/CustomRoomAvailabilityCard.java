@@ -2,8 +2,11 @@ package mswing;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,11 +18,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.Room;
+
 public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
     private float legendTextSize = 18f;
     private int circleSize = 12;
-    public CustomRoomAvailabilityCard(String building) throws IOException, FontFormatException
+    private Color backgroundColor = new Color(240, 240, 240);
+    private int gridGap = 15;
+    private int rowHeight = gridGap + 98;
+    private int numberOfRoomsPerRow = 4;
+    public CustomRoomAvailabilityCard(String building) throws IOException, FontFormatException, SQLException
     {
+        ArrayList<Room> rooms = Room.GetRoomInBuilding(building);
+        if (rooms.size() == 0)
+        {
+            return;
+        }
+        else
+        {
+            int currHeight = (int)(34 + Math.ceil(rooms.size() / (double)numberOfRoomsPerRow) * rowHeight);
+            this.SetDimensions(new Dimension(480, currHeight));
+        }
 
         setLayout(new BorderLayout());
 
@@ -37,7 +56,7 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
             title.getBorder()
         ));
 
-        setBackground(new Color(240, 240, 240));
+        setBackground(backgroundColor);
         // Create a panel for the title and occupied indicator
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
@@ -66,9 +85,49 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
 
         titlePanel.add(legendPanel);
         
-        setBackground(new Color(240, 240, 240));
+        setBackground(backgroundColor);
         
         // Add the title panel to the main panel
         add(titlePanel, BorderLayout.NORTH);
+
+        // Create a panel for the grid of _CustomRoundedPanel
+        JPanel gridContainer = new JPanel(new BorderLayout());
+        gridContainer.setOpaque(false);
+
+        // Create a panel for the grid of _CustomRoundedPanel
+        JPanel gridPanel = new JPanel(new GridLayout((int)Math.ceil(rooms.size() / (double)numberOfRoomsPerRow), 4, 15, 15)); // 2 rows, 3 columns, gap of 10px
+        gridPanel.setOpaque(false);
+
+        for (int i = 0; i < rooms.size(); i++) 
+        {
+            _CustomRoundedPanel roundedPanel = new _CustomRoundedPanel();
+            if (rooms.get(i).IsRoomCurrentlyReserved()) // Set background color of the rounded panel
+            {
+                roundedPanel.setBackground(Color.RED); 
+            }
+            else
+            {
+                roundedPanel.setBackground(Color.GREEN); 
+            }
+            gridPanel.add(roundedPanel);
+        }
+        
+        if (rooms.size() % 4 != 0)
+        {
+            // To avoid problem we fill the rest of the row with transparent cells 
+            for (int i = 0; i < (4 - rooms.size() % 4); ++i)
+            {
+                _CustomRoundedPanel roundedPanel = new _CustomRoundedPanel();
+                roundedPanel.setBackground(backgroundColor); // Set background color of the rounded panel
+                gridPanel.add(roundedPanel);
+            }
+        }
+
+        gridContainer.add(gridPanel, BorderLayout.CENTER);
+        // Add margin to the left and right of the grid container
+        gridContainer.setBorder(new EmptyBorder(0, 20, 10, 20));
+
+        // Add the grid container to the main panel
+        add(gridContainer, BorderLayout.CENTER);
     }
 }
