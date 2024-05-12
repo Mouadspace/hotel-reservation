@@ -76,6 +76,17 @@ public class Room {
         return false;
     }
 
+    public void Drop() throws SQLException
+    {
+        // Drom the room and all other references to it
+        String reservationQuery = "DELETE FROM reservation WHERE RoomID=" + Integer.toString(this.roomID);
+        String roomDetailsQuery = "DELETE FROM roomdetails WHERE RoomID=" + Integer.toString(this.roomID);
+        String roomQuery = "DELETE FROM room WHERE RoomID=" + Integer.toString(this.roomID);
+        DataBase.getStatement().executeUpdate(reservationQuery);
+        DataBase.getStatement().executeUpdate(roomDetailsQuery);
+        DataBase.getStatement().executeUpdate(roomQuery);
+    }
+
     static public ArrayList<Room> GetRooms() throws SQLException
     {
         ArrayList<Room> ret = new ArrayList<Room>();
