@@ -29,7 +29,7 @@ import utils.navigation.Screen;
 
 public class ReservedRooms extends Screen{
 
-  private CustomButton chooseDateButton;
+  private CustomButton returnHome;
 
   // Here we just initialize the array of the reservations of the user 
   // and the Room in the right panel
@@ -55,6 +55,10 @@ public class ReservedRooms extends Screen{
     int ClientID = 4;
 
     // Setting some Panels that we're going to need in both cases (if there is any reservations or there isn't)
+    // This the parent panel:
+    setLayout(new BorderLayout());
+    setBackground(COLORS.background);
+
     // FONTS : 
     FONTS font = new FONTS();
 
@@ -68,22 +72,55 @@ public class ReservedRooms extends Screen{
  
     // MAIN PANEL
     JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BorderLayout());
 
     // Here we get the reservations and set the default right panel room
     // All Reservations
     allReservations = Reservation.getReservations(ClientID);
 
     if (allReservations.isEmpty()) {
-      JLabel noReservations = new JLabel("You have no reservations, go check some room that you might like.");
-      mainPanel.add(noReservations, BorderLayout.CENTER);
+      //Creating a label for a message of 0 Reservations have been made yet
+      JLabel message1 = new JLabel("Looks like you haven't made any reservations yet.");
+      message1.setBorder(BorderFactory.createEmptyBorder(100, 100, 5, 100));
+      message1.setFont(font.getH5());
+      JLabel message2 = new JLabel("Feel free to explore our available rooms and find the perfect one for your next stay!");
+      message2.setBorder(BorderFactory.createEmptyBorder(0, 70, 10, 70));
+      message2.setFont(font.getH6());
+
+      // Creating a button of Going to reserve some pages
+      JPanel goHomeButton = new JPanel(new GridLayout());
+      goHomeButton.setBackground(new Color(0, 0, 0, 0));
+      goHomeButton.setAlignmentX(0.0f);
+      returnHome = new CustomButton();
+      returnHome.setBackground(COLORS.primary);
+      returnHome.setForeground(COLORS.surface);
+      returnHome.setText("Check Avaible Rooms");
+      returnHome.setFont(font.getH6());
+      returnHome.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+      goHomeButton.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100));
+      returnHome.setFocusable(false);
+      goHomeButton.setMaximumSize(new Dimension(320, 20));
+      goHomeButton.add(returnHome);
+
+      // Set some action to the button
+    returnHome.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          if (e.getSource() == returnHome){
+            // Navigate back to home page
+            navigateTo("/home"); 
+      }}     
+    });
+
+
+      // Adding the text message
+      mainPanel.add(message1);
+      mainPanel.add(message2);
+      mainPanel.add(goHomeButton);
     } else {
+      mainPanel.setLayout(new BorderLayout());
 
     // Default Right Panel ROOM
     rightPanelRoom = new Reservation(allReservations.get(0));
-    
-    setLayout(new BorderLayout());
-    setBackground(COLORS.background);
 
    
 
@@ -330,20 +367,6 @@ public class ReservedRooms extends Screen{
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
     mainPanel.add(roomListPanel, BorderLayout.CENTER);
 
-    JPanel helperButtom = new JPanel(new GridLayout());
-    helperButtom.setBackground(new Color(0, 0, 0, 0));
-    helperButtom.setAlignmentX(0.0f);
-    chooseDateButton = new CustomButton();
-    chooseDateButton.setBackground(COLORS.primary);
-    chooseDateButton.setForeground(COLORS.surface);
-    chooseDateButton.setText("choose your date");
-    chooseDateButton.setFont(font.getH6());
-    chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
-    chooseDateButton.setFocusable(false);
-    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
-    helperButtom.add(chooseDateButton);
-
 
     // ADDING COMPONENTS TO SUMMARY PANEL
     roomDetails.add(hotelImage);
@@ -356,10 +379,7 @@ public class ReservedRooms extends Screen{
 
     // roomDetails.add(Box.createVerticalGlue());
     roomDetails.add(totalPriceAndCancelPanel);
-
-
-    
-
+  
     // ADDING PANELES TO FRAME
     // Here is the Room Details, cause we'll use only if there is rooms
     add(roomDetails, BorderLayout.EAST);
