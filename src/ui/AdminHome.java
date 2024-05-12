@@ -47,8 +47,15 @@ public class AdminHome extends Screen{
         priceAndDiscount = new CustomAdminPriceAndDiscount();
         cards.add(priceAndDiscount, "Pricing & Discounts");
 
-        customers = new CustomAdminCustomers();
-        cards.add(customers, "Customers");
+        try
+        {
+            customers = new CustomAdminCustomers();
+            cards.add(customers, "Customers");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
