@@ -19,6 +19,9 @@ public class Reservation {
     private int bathrooms;
     private int bedrooms;
     private String description;
+    private int clientID;
+    private String clientName; 
+    private String email;
     
 
     public int getReservationID() {
@@ -109,6 +112,19 @@ public class Reservation {
         this.description = description;
     }
 
+    public int getClientID()
+    {
+        return clientID;
+    }
+    public String getClientName()
+    {
+        return clientName;
+    }
+    public String getEmail()
+    {
+        return email;
+    }
+
     public Reservation(int ReservationID, int RoomID, double TotalPrice, LocalDate checkIn, LocalDate checkOut, String roomType, String imagePath, int maxMembers, int bathrooms, int bedrooms, String description) {
         this.ReservationID = ReservationID;
         this.RoomID = RoomID;
@@ -123,8 +139,37 @@ public class Reservation {
         this.description = description;
     }
 
-    public Reservation() {
-        
+    public Reservation(
+        int ReservationID, 
+        int RoomID, 
+        double TotalPrice, 
+        LocalDate checkIn, 
+        LocalDate checkOut,
+        String roomType, 
+        String imagePath, 
+        int maxMembers, 
+        int bathrooms, 
+        int bedrooms, 
+        String description, 
+        int clientID, 
+        String clientName, 
+        String email
+    ) 
+    {
+        this.ReservationID = ReservationID;
+        this.RoomID = RoomID;
+        this.TotalPrice = TotalPrice;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.roomType = roomType;
+        this.imagePath = imagePath;
+        this.maxMembers = maxMembers;
+        this.bathrooms = bathrooms;
+        this.bedrooms = bedrooms;
+        this.description = description;
+        this.clientID = clientID;
+        this.clientName = clientName;
+        this.email = email;
     }
 
     public Reservation(Reservation reservedRoom) {
@@ -207,6 +252,8 @@ public class Reservation {
         }
         return result;
     }
+
+    
 
     // This is to cancel the reservation:
     public void cancelReservation() throws SQLException {
