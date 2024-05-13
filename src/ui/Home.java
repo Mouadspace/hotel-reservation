@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -48,8 +47,9 @@ public class Home extends Screen implements ActionListener{
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
 
 
+    CustomTopBar customTopBar = new CustomTopBar(client);
     // ADDING THE HEADER
-    headerPanel.add(new CustomTopBar(client));
+    headerPanel.add(customTopBar);
 
     Room firstRoom = rooms.get(0);
     // RIGHT SIDE PANEL
@@ -148,7 +148,7 @@ public class Home extends Screen implements ActionListener{
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BorderLayout());
 
-    JLabel roomOptionsLabel = new JLabel("Rooms options");
+    JLabel roomOptionsLabel = new JLabel("Discover our rooms");
     roomOptionsLabel.setFont(font.getH4());
     roomOptionsLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     
@@ -244,14 +244,22 @@ public class Home extends Screen implements ActionListener{
 
   }
 
+  public void updateDisplayedRooms(ArrayList<Room> updatedRooms) {
+    rooms = updatedRooms;
+  }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     if( e.getSource() == chooseDateButton){
       try {
         ScreenManager sm = InitRoutes.screenManager; 
-        sm.add(new Reservation(currentCard, client), "/reservation");
-        navigateTo("/reservation");
+        
+        if(client.isLoggedIn){
+          sm.add(new Reservation(currentCard, client), "/reservation");
+          navigateTo("/reservation");
+        }else{
+          navigateTo("/login");
+        }
       } catch (FontFormatException | IOException e1) {
         e1.printStackTrace();
       }

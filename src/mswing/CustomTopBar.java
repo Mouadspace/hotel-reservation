@@ -12,6 +12,7 @@ import constants.FONTS;
 import model.User;
 import utils.ImgUtil;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.GridLayout;
@@ -30,8 +31,9 @@ public class CustomTopBar extends Screen {
         FONTS font = new FONTS();
         JLabel logo = new JLabel(new ImageIcon(ImgUtil.resizeImage("assets/logo.png", 40)));
 
-        JLabel userReservations = new JLabel(client.isLoggedIn ? "Reservation" : "");
+        JLabel userReservations = new JLabel(client.isLoggedIn ? "Reservations" : "");
         userReservations.setFont(font.getLabel());
+        userReservations.setCursor(new Cursor(Cursor.HAND_CURSOR));
         userReservations.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
         userReservations.addMouseListener(new MouseListener() {
@@ -62,7 +64,7 @@ public class CustomTopBar extends Screen {
         
         JLabel account=new JLabel(client.isLoggedIn ? "Sign out" : "Sign in");
         account.setFont(font.getLabel());
-
+        account.setCursor(new Cursor(Cursor.HAND_CURSOR));
         account.addMouseListener(new MouseListener() {
 
             @Override
