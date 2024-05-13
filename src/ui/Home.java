@@ -23,6 +23,26 @@ import utils.ImgUtil;
 import utils.navigation.Screen;
 
 public class Home extends Screen implements ActionListener{
+  // The ClientID & RoomID
+  private int ClientID;
+  private int RoomID;
+
+  public int getClientID() {
+    return ClientID;
+  }
+
+  public void setClientID(int clientID) {
+    ClientID = clientID;
+  }
+
+  public int getRoomID() {
+    return RoomID;
+  }
+
+  public void setRoomID(int roomID) {
+    RoomID = roomID;
+  }
+
   private CustomButton chooseDateButton;
   ArrayList<Room> rooms = new ArrayList<Room>();
 
@@ -165,6 +185,8 @@ public class Home extends Screen implements ActionListener{
       roomCard.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
+            // Setting the RoomID
+            setRoomID(room.getRoomID());
             
             // Update the room details in the typePricePanel
             roomType.setText(room.getRoomName());
