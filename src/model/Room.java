@@ -10,7 +10,7 @@ import DB.DataBase;
 public class Room {
     private
         int roomID;
-        String roomName;
+        String roomName; // AKA Room Type
         String building;
         float price;
         String image;
@@ -84,6 +84,26 @@ public class Room {
         String roomQuery = "DELETE FROM room WHERE RoomID=" + Integer.toString(this.roomID);
         DataBase.getStatement().executeUpdate(reservationQuery);
         DataBase.getStatement().executeUpdate(roomDetailsQuery);
+        DataBase.getStatement().executeUpdate(roomQuery);
+    }
+
+    public void Update(
+        String type, 
+        String price, 
+        String title, 
+        String members, 
+        String bathroom, 
+        String bedroom, 
+        String description, 
+        String building
+    ) throws SQLException
+    {
+        String roomQuery = "UPDATE room SET roomType='" + type + "', Price=" + price + ", Title='" + title + "' WHERE RoomID=" + Integer.toString(roomID);
+        String roomDetailQuery = "UPDATE roomdetails SET Max_Members=" + members + ", Bathroom=" + bathroom + ", Bedroom=" + bedroom + ", Description='" + description + "', Building='" + building + "' WHERE RoomID=" + Integer.toString(roomID);
+        System.out.println(roomDetailQuery);
+        System.out.println(roomQuery);
+        
+        DataBase.getStatement().executeUpdate(roomDetailQuery);
         DataBase.getStatement().executeUpdate(roomQuery);
     }
 

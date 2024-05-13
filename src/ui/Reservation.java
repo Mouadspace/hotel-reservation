@@ -41,6 +41,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   private CustomButton confirmPayButton;
   private Room room;
   private User client;
+  private float total;
 
 
 
@@ -56,9 +57,11 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
   public Reservation(Room selectedRoom, User client) throws FontFormatException, IOException{
+    
     this.client = client;
     System.out.println(client.getEmail() + " - " +client.getUserID());
     room = selectedRoom;
+    total = room.getPrice();
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
 
@@ -511,16 +514,26 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     backButton.addActionListener(this);
     startDatePicker.addDateChangeListener(this);
     endDatePicker.addDateChangeListener(this);
+    confirmPayButton.addActionListener(this);
 
   }
 
 
+
   @Override
   public void actionPerformed(ActionEvent e) {
+    ScreenManager sm =  InitRoutes.screenManager;
     if (e.getSource() == backButton){
-      ScreenManager sm =  InitRoutes.screenManager;
       navigateTo("/home");
       sm.remove(this);
+    }else if  (e.getSource() == confirmPayButton){
+      try {
+        model.Reservation resv = new model.Reservation();
+        resv.saveReservationToDb(client.getUserID(), room.getRoomID(),startDatePicker.getDate(),endDatePicker.getDate(), total);
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+
     }
   }
 
@@ -542,17 +555,17 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       repaint();
 
 
-      int res = (int) (price * diff);
-      int  taxes = (int) (res * 0.1);
+      total = (int) (price * diff);
+      int  taxes = (int) (total * 0.1);
 
       prices.setText(price + "$ x "+ diff + " nights");
-      calc.setText(res  + "$");
+      calc.setText(total  + "$");
       taxesPrice.setText(taxes + "$");
 
-      res += taxes;
-      totalPrices.setText(res + "$");
-      confirmPayButton.setText("Confirm & pay " + res + "$");
+      total += taxes;
       
+      totalPrices.setText(total + "$");
+      confirmPayButton.setText("Confirm & pay " + total + "$");
     }else{
       confirmPayButton.setText("Invalide Dates");
       confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
@@ -562,7 +575,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       taxesPrice.setText("");
       totalPrices.setText("");
     }
-
 
   }
 
