@@ -30,6 +30,7 @@ import utils.navigation.Screen;
 
 public class ReservedRooms extends Screen{
 
+
   private CustomButton returnHome;
 
   // Here we just initialize the array of the reservations of the user 
@@ -53,6 +54,7 @@ public class ReservedRooms extends Screen{
 
   public ReservedRooms(User client) throws FontFormatException, IOException, SQLException{
     // Here we get the instance of the connected user:
+    // int ClientID = client.getUserID();
     int ClientID = 4;
 
     // Setting some Panels that we're going to need in both cases (if there is any reservations or there isn't)
@@ -359,14 +361,19 @@ public class ReservedRooms extends Screen{
     
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
+
     }
+
+    JScrollPane scrollCards = new JScrollPane(roomListPanel);
+    scrollCards.setBorder(null);
+
 
     
 
 
     // ADDING COMPONENT TO THE MAIN PANEL 
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
-    mainPanel.add(roomListPanel, BorderLayout.CENTER);
+    mainPanel.add(scrollCards, BorderLayout.CENTER);
 
 
     // ADDING COMPONENTS TO SUMMARY PANEL
