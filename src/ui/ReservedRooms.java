@@ -24,9 +24,10 @@ import model.User;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
-
+import routes.InitRoutes;
 import utils.ImgUtil;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 public class ReservedRooms extends Screen{
 
@@ -51,11 +52,14 @@ public class ReservedRooms extends Screen{
     return shortDate;
   }
 
+  private User client;
+
 
   public ReservedRooms(User client) throws FontFormatException, IOException, SQLException{
     // Here we get the instance of the connected user:
-    // int ClientID = client.getUserID();
-    int ClientID = 4;
+    this.client = client;
+    int ClientID = client.getUserID();
+    // int ClientID = 4;
 
     // Setting some Panels that we're going to need in both cases (if there is any reservations or there isn't)
     // This the parent panel:
@@ -70,8 +74,9 @@ public class ReservedRooms extends Screen{
     headerPanel.setBackground(COLORS.background);
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
      
+    CustomTopBar customTopBar = new CustomTopBar(client);
     // ADDING THE HEADER
-    headerPanel.add(new CustomTopBar(client));
+    headerPanel.add(customTopBar);
  
     // MAIN PANEL
     JPanel mainPanel = new JPanel();
@@ -110,6 +115,9 @@ public class ReservedRooms extends Screen{
       public void actionPerformed(ActionEvent e) {
           if (e.getSource() == returnHome){
             // Navigate back to home page
+            System.out.println("Button clicked");
+            System.out.println("Client ID:" + client.getUserID());
+            System.out.println("Client ID:" + ClientID);
             navigateTo("/home"); 
       }}     
     });
@@ -246,6 +254,11 @@ public class ReservedRooms extends Screen{
     cancelButton.setBorderRadius(12);
     cancelButton.setEffectColor(new Color(0xFC6222));
     cancelButton.setForeground(new Color(0xFC6222));
+    // if (rightPanelRoom.isFreeCancelation()) {
+    //   cancelButton.setText("Cancel");
+    // } else {
+
+    // }
     cancelButton.setText("Cancel");
     cancelButton.setFont(font.getLabel()); 
     // Set some action to the button
@@ -254,15 +267,26 @@ public class ReservedRooms extends Screen{
       public void actionPerformed(ActionEvent e) {
           if (e.getSource() == cancelButton){
             try {
+              System.out.print(client.getUserID());
               rightPanelRoom.cancelReservation();
               
               // We'll get the new list of reservations
-              allReservations = Reservation.getReservations(4);
+              allReservations = Reservation.getReservations(ClientID);
+
+              ScreenManager sm = InitRoutes.screenManager; 
+              sm.add(new ReservedRooms(client), "/reserved_rooms");
+              navigateTo("/reserved_rooms");
 
               // Navigate back to home page
-              navigateTo("/home");
+              // navigateTo("/home");
 
             } catch (SQLException e1) {
+              e1.printStackTrace();
+            } catch (FontFormatException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            } catch (IOException e1) {
+              // TODO Auto-generated catch block
               e1.printStackTrace();
             } 
       }}     
@@ -366,9 +390,8 @@ public class ReservedRooms extends Screen{
 
     JScrollPane scrollCards = new JScrollPane(roomListPanel);
     scrollCards.setBorder(null);
+    scrollCards.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
 
-
-    
 
 
     // ADDING COMPONENT TO THE MAIN PANEL 

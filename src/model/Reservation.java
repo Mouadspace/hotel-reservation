@@ -272,5 +272,10 @@ public class Reservation {
     public void saveReservationToDb(int userId, int roomId,LocalDate ci, LocalDate co, float total ) throws SQLException{
         System.out.println(ci + " | " + co);
         DataBase.getStatement().executeUpdate("insert into reservation (clientid, roomid, checkindate, checkoutdate, totalprice) values("+userId+","+roomId+", '"+ci+"', '"+co+"', "+total+")");
-      }
+    }
+
+    public boolean isFreeCancelation() {
+        LocalDate today = LocalDate.now();
+        return !today.isAfter(checkIn) && !today.isEqual(checkIn);
+    }
 }

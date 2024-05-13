@@ -10,6 +10,9 @@ import java.awt.event.MouseListener;
 
 import constants.FONTS;
 import model.User;
+import routes.InitRoutes;
+import ui.Home;
+import ui.ReservedRooms;
 import utils.ImgUtil;
 
 import java.awt.Cursor;
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 
 
@@ -41,7 +45,22 @@ public class CustomTopBar extends Screen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (client.isLoggedIn) {
+                    ScreenManager sm = InitRoutes.screenManager;
+                    try {
+                        sm.add(new ReservedRooms(client), "/reserved_rooms");
+                    } catch (FontFormatException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     navigateTo("/reserved_rooms");
+                    client.isLoggedIn = true;
+                    
                 } 
             }
 

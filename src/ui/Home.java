@@ -25,16 +25,16 @@ import utils.navigation.ScreenManager;
 
 public class Home extends Screen implements ActionListener{
   // The ClientID & RoomID
-  private int ClientID;
+  // private int ClientID;
   private int RoomID;
 
-  public int getClientID() {
-    return ClientID;
-  }
+  // public int getClientID() {
+  //   return ClientID;
+  // }
 
-  public void setClientID(int clientID) {
-    ClientID = clientID;
-  }
+  // public void setClientID(int clientID) {
+  //   ClientID = clientID;
+  // }
 
   public int getRoomID() {
     return RoomID;
