@@ -26,13 +26,13 @@ public class InitRoutes {
     screenManager = new ScreenManager();
 
     // ADD YOUR SCREENS HERE
-    screenManager.addScreen(new ReservedRooms(client), "/reserved_rooms");
+    
     // Start here
     screenManager.addScreen(new Home(client), "/home");
     screenManager.addScreen(new Login(client), "/login");
     screenManager.addScreen(new Register(client), "/register");
     screenManager.addScreen(new AdminHome(), "/admin");
-    // screenManager.addScreen(new ReservedRooms(client), "/reserved_rooms");
+    screenManager.addScreen(new ReservedRooms(client), "/reserved_rooms");
 
 
     frame.add(screenManager);
