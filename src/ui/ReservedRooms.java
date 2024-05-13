@@ -94,7 +94,7 @@ public class ReservedRooms extends Screen{
       returnHome = new CustomButton();
       returnHome.setBackground(COLORS.primary);
       returnHome.setForeground(COLORS.surface);
-      returnHome.setText("Check Avaible Rooms");
+      returnHome.setText("Check Available Rooms");
       returnHome.setFont(font.getH6());
       returnHome.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
       goHomeButton.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100));

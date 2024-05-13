@@ -258,7 +258,9 @@ public class Home extends Screen implements ActionListener{
           sm.add(new Reservation(currentCard, client), "/reservation");
           navigateTo("/reservation");
         }else{
+          client.isLoggedIn=true;
           navigateTo("/login");
+          sm.remove(this);
         }
       } catch (FontFormatException | IOException e1) {
         e1.printStackTrace();

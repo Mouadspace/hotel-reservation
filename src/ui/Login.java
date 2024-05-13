@@ -26,7 +26,9 @@ import constants.FONTS;
 import model.User;
 import model.Admin;
 import mswing.CustomButton;
+import routes.InitRoutes;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 
 public class Login extends Screen implements ActionListener, MouseListener{
@@ -61,6 +63,8 @@ public class Login extends Screen implements ActionListener, MouseListener{
   public void actionPerformed(ActionEvent event) {
       if(event.getSource() == loginButton ){
       try {
+        ScreenManager sm = InitRoutes.screenManager; 
+
         String email = loginField.getText();
         String pass  = passField.getText();
 
@@ -71,6 +75,8 @@ public class Login extends Screen implements ActionListener, MouseListener{
           passField.setText("");
           authErr.setVisible(false);
           client.setUser(client.getUserIDFromDB(email), email, pass);
+          client.isLoggedIn=true;
+          sm.add(new Home(client), "/home");
           navigateTo("/home");
         }
         else if (Admin.checkAdmin(email, pass))
@@ -84,9 +90,10 @@ public class Login extends Screen implements ActionListener, MouseListener{
         {
           authErr.setText("username or password incorrect");
           authErr.setVisible(true);
+          client.isLoggedIn=false;
         }
               
-      } catch (SQLException e) {
+      } catch (SQLException | FontFormatException | IOException e) {
           e.printStackTrace();
       } 
 
@@ -112,7 +119,7 @@ public class Login extends Screen implements ActionListener, MouseListener{
     signupLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(signupLabel, 60, 0, 0, 0);
     
-    JLabel joinLabel = new JLabel("Join the community today!");
+    JLabel joinLabel = new JLabel(" ");
     joinLabel.setFont(font.getLabel());
     joinLabel.setForeground(COLORS.grey);
     joinLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);

@@ -25,7 +25,9 @@ import constants.COLORS;
 import constants.FONTS;
 import model.User;
 import mswing.CustomButton;
+import routes.InitRoutes;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 
 public class Register extends Screen implements ActionListener, MouseListener{
@@ -61,6 +63,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
   public void actionPerformed(ActionEvent event) {
       if(event.getSource() == signupButton ){
       try {
+        ScreenManager sm = InitRoutes.screenManager; 
         String email = loginField.getText();
         String pass  = passField.getText();
         boolean isEmail = isEmail(email);
@@ -82,6 +85,8 @@ public class Register extends Screen implements ActionListener, MouseListener{
             passField.setText("");
             emailErr.setVisible(false);
             passwordErr.setVisible(false);
+            client.isLoggedIn=true;
+            sm.add(new Home(client), "/home");
             navigateTo("/home");
           }else{
             emailErr.setText("email already exist");
@@ -89,7 +94,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
             passwordErr.setVisible(false);
           }
         }         
-      } catch (SQLException e) {
+      } catch (SQLException | FontFormatException | IOException e) {
           e.printStackTrace();
       }
 
@@ -122,7 +127,6 @@ public class Register extends Screen implements ActionListener, MouseListener{
     
 
 
-
     JPanel topPanel = new JPanel();
     topPanel.setBackground(COLORS.surface);
     topPanel.setPreferredSize(new Dimension(100,220));
@@ -134,7 +138,7 @@ public class Register extends Screen implements ActionListener, MouseListener{
     signupLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     setMargin(signupLabel, 60, 0, 0, 0);
     
-    JLabel joinLabel = new JLabel("Join the community today!");
+    JLabel joinLabel = new JLabel(" ");
     joinLabel.setFont(font.getLabel());
     joinLabel.setForeground(COLORS.grey);
     joinLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
