@@ -101,7 +101,7 @@ public class CustomRoomAvailabilityCard extends _CustomRoundedPanel{
         gridContainer.setOpaque(false);
 
         // Create a panel for the grid of _CustomRoundedPanel
-        JPanel gridPanel = new JPanel(new GridLayout((int)Math.ceil(rooms.size() / (double)numberOfRoomsPerRow), 4, 15, 15)); // 2 rows, 3 columns, gap of 10px
+        JPanel gridPanel = new JPanel(new GridLayout((int)Math.ceil(rooms.size() / (double)numberOfRoomsPerRow), 4, gridGap, gridGap));
         gridPanel.setOpaque(false);
 
         for (int i = 0; i < rooms.size(); i++) 
