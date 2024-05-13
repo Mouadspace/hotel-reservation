@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import javax.swing.JPanel;
 
 import mswing.CustomAdminCustomers;
-import mswing.CustomAdminPriceAndDiscount;
 import mswing.CustomAdminRoomAvailability;
 import mswing.CustomAdminSidebar;
 import utils.navigation.Screen;
@@ -18,7 +17,6 @@ public class AdminHome extends Screen{
     static JPanel cards;
     static CustomAdminSidebar sideBar;
     static CustomAdminRoomAvailability roomAvailabilityPanel;
-    static CustomAdminPriceAndDiscount priceAndDiscount;
     static CustomAdminCustomers customers;
     public AdminHome() throws IOException, FontFormatException 
     {
@@ -43,9 +41,6 @@ public class AdminHome extends Screen{
         {
             e.printStackTrace();
         }
-
-        priceAndDiscount = new CustomAdminPriceAndDiscount();
-        cards.add(priceAndDiscount, "Pricing & Discounts");
 
         try
         {

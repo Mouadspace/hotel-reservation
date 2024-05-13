@@ -113,43 +113,6 @@ public class CustomAdminSidebar extends JPanel{
         // Add a margin between the options
         optionsPanel.add(Box.createVerticalStrut(optionSpacing));
 
-        // Option 2
-        JLabel option2 = new JLabel("Pricing & Discounts");
-        option2.setFont(font.deriveFont(fontSize));
-        option2.setForeground(Color.BLACK);
-        option2.setOpaque(false);
-        option2.setPreferredSize(new Dimension(250, 30));
-        option2.setHorizontalAlignment(JLabel.LEFT);
-        option2.setVerticalAlignment(JLabel.CENTER);
-        option2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                option2.setBackground(Color.BLACK);
-                option2.setForeground(Color.WHITE);
-                option2.setOpaque(true);
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                option2.setOpaque(false);
-                option2.setBackground(null); // Reset to default background
-                option2.setForeground(Color.BLACK); // Reset to default text color
-            }
-
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // Action for Option 2 clicked
-                CardLayout cardLayout = (CardLayout) cards.getLayout();
-                cardLayout.show(cards, "Pricing & Discounts");
-            }
-        });
-        option2.setBorder(BorderFactory.createCompoundBorder(
-            new EmptyBorder(0, 10, 0, 0), // Add left margin of 10px
-            option2.getBorder()
-        ));
-        option2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        optionsPanel.add(option2);
-
-        // Add a margin between the options
-        optionsPanel.add(Box.createVerticalStrut(optionSpacing));
-
         // Option 3
         JLabel option3 = new JLabel("Customers");
         option3.setFont(font.deriveFont(fontSize));
