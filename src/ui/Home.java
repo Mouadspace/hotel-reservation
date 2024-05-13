@@ -244,23 +244,17 @@ public class Home extends Screen implements ActionListener{
     }
     JScrollPane scrollCards = new JScrollPane(roomListPanel);
     scrollCards.setBorder(null);
-
+    scrollCards.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
 
     // ADDING COMPONENT TO THE MAIN PANEL 
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
     mainPanel.add(scrollCards, BorderLayout.CENTER);
 
-    
-
-
-    
 
     // ADDING PANELES TO FRAME
     add(headerPanel, BorderLayout.NORTH);
     add(mainPanel, BorderLayout.CENTER);
     add(roomDetails, BorderLayout.EAST);
-
-
 
     // ADDING LISTENERS 
     chooseDateButton.addActionListener(this);

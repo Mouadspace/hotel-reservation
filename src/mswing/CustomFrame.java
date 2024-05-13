@@ -16,7 +16,7 @@ public class CustomFrame extends JFrame{
     setIconImage(new ImageIcon("assets/hotel2.png").getImage());
     
     // Disabling resizing so that the window keeps the same size no matter what
-    setResizable(false);
+    setResizable(true);
     setVisible(true);
   }
 

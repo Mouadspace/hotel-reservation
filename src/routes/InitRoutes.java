@@ -11,7 +11,6 @@ import ui.Home;
 import ui.Login;
 import ui.Register;
 import ui.ReservedRooms;
-//import ui.ReservedRooms;
 import utils.navigation.ScreenManager;
 
 public class InitRoutes {
