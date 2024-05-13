@@ -24,6 +24,26 @@ import utils.navigation.Screen;
 import utils.navigation.ScreenManager;
 
 public class Home extends Screen implements ActionListener{
+  // The ClientID & RoomID
+  private int ClientID;
+  private int RoomID;
+
+  public int getClientID() {
+    return ClientID;
+  }
+
+  public void setClientID(int clientID) {
+    ClientID = clientID;
+  }
+
+  public int getRoomID() {
+    return RoomID;
+  }
+
+  public void setRoomID(int roomID) {
+    RoomID = roomID;
+  }
+
   private CustomButton chooseDateButton;
   ArrayList<Room> rooms = new ArrayList<Room>();
   private Room currentCard;
@@ -198,6 +218,8 @@ public class Home extends Screen implements ActionListener{
       roomCard.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
+            // Setting the RoomID
+            setRoomID(room.getRoomID());
             
             // Update the room details in the typePricePanel
             roomType.setText(room.getRoomName());
@@ -220,11 +242,13 @@ public class Home extends Screen implements ActionListener{
       roomListPanel.add(Box.createVerticalStrut(20));
       
     }
+    JScrollPane scrollCards = new JScrollPane(roomListPanel);
+    scrollCards.setBorder(null);
 
 
     // ADDING COMPONENT TO THE MAIN PANEL 
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
-    mainPanel.add(roomListPanel, BorderLayout.CENTER);
+    mainPanel.add(scrollCards, BorderLayout.CENTER);
 
     
 
