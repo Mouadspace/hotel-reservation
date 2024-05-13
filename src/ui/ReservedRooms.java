@@ -254,11 +254,6 @@ public class ReservedRooms extends Screen{
     cancelButton.setBorderRadius(12);
     cancelButton.setEffectColor(new Color(0xFC6222));
     cancelButton.setForeground(new Color(0xFC6222));
-    // if (rightPanelRoom.isFreeCancelation()) {
-    //   cancelButton.setText("Cancel");
-    // } else {
-
-    // }
     cancelButton.setText("Cancel");
     cancelButton.setFont(font.getLabel()); 
     // Set some action to the button
@@ -277,20 +272,16 @@ public class ReservedRooms extends Screen{
               sm.add(new ReservedRooms(client), "/reserved_rooms");
               navigateTo("/reserved_rooms");
 
-              // Navigate back to home page
-              // navigateTo("/home");
-
             } catch (SQLException e1) {
               e1.printStackTrace();
             } catch (FontFormatException e1) {
-              // TODO Auto-generated catch block
               e1.printStackTrace();
             } catch (IOException e1) {
-              // TODO Auto-generated catch block
               e1.printStackTrace();
             } 
       }}     
     });
+
     // Add the button to its Panel:
     cancelPanel.add(cancelButton);
     // Adding the cancel to the grid
@@ -303,7 +294,6 @@ public class ReservedRooms extends Screen{
 
     
     // Continue the code of the main panel
-
     JLabel roomOptionsLabel = new JLabel("Your Reservations");
     roomOptionsLabel.setFont(font.getH4());
     roomOptionsLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
