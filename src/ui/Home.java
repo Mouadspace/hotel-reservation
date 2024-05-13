@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,12 +14,14 @@ import javax.swing.*;
 import constants.COLORS;
 import constants.FONTS;
 import model.Room;
+import model.User;
 import mswing.CustomButton;
 import mswing.CustomPanel;
 import mswing.CustomTopBar;
-
+import routes.InitRoutes;
 import utils.ImgUtil;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 public class Home extends Screen implements ActionListener{
   // The ClientID & RoomID
@@ -45,10 +46,14 @@ public class Home extends Screen implements ActionListener{
 
   private CustomButton chooseDateButton;
   ArrayList<Room> rooms = new ArrayList<Room>();
+  private Room currentCard;
+  private User client;
 
 
-  public Home() throws FontFormatException, IOException, SQLException{
+  public Home(User client) throws FontFormatException, IOException, SQLException{
+    this.client = client;
     rooms=Room.GetRooms();
+    currentCard = rooms.get(0);
 
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
@@ -62,8 +67,9 @@ public class Home extends Screen implements ActionListener{
     headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, COLORS.lightGrey));
 
 
+    CustomTopBar customTopBar = new CustomTopBar(client);
     // ADDING THE HEADER
-    headerPanel.add(new CustomTopBar());
+    headerPanel.add(customTopBar);
 
     Room firstRoom = rooms.get(0);
     // RIGHT SIDE PANEL
@@ -132,10 +138,37 @@ public class Home extends Screen implements ActionListener{
     roomFeaturesPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 
+    JPanel helperButtom = new JPanel(new GridLayout());
+    helperButtom.setBackground(new Color(0, 0, 0, 0));
+    helperButtom.setAlignmentX(0.0f);
+    chooseDateButton = new CustomButton();
+    chooseDateButton.setBackground(COLORS.primary);
+    chooseDateButton.setForeground(COLORS.surface);
+    chooseDateButton.setText("Book now");
+    chooseDateButton.setFont(font.getH6());
+    chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+    chooseDateButton.setFocusable(false);
+    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
+    helperButtom.add(chooseDateButton);
+
+
+    // ADDING COMPONENTS TO SUMMARY PANEL
+    roomDetails.add(hotelImage);
+    roomDetails.add(typePricePanel);
+    roomDetails.add(roomDetailsLabel);
+    roomDetails.add(roomDetailsContent);
+    roomDetails.add(roomFeaturesLabel);
+    roomDetails.add(roomFeaturesPanel);
+
+    roomDetails.add(Box.createVerticalGlue());
+    roomDetails.add(helperButtom);
+
+    // MAIN PANEL
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BorderLayout());
 
-    JLabel roomOptionsLabel = new JLabel("Rooms options");
+    JLabel roomOptionsLabel = new JLabel("Discover our rooms");
     roomOptionsLabel.setFont(font.getH4());
     roomOptionsLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     
@@ -195,17 +228,19 @@ public class Home extends Screen implements ActionListener{
             try {
               hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/"+room.getImage(), 12, 280)));
             } catch (IOException e1) {
-              // TODO Auto-generated catch block
               e1.printStackTrace();
             }
 
             // Repaint the roomDetails panel to reflect the changes
             roomDetails.repaint();
+            currentCard = room;
+
           }
       }); 
 
       roomListPanel.add(roomCard);
       roomListPanel.add(Box.createVerticalStrut(20));
+      
     }
 
 
@@ -213,31 +248,7 @@ public class Home extends Screen implements ActionListener{
     mainPanel.add(roomOptionsLabel, BorderLayout.NORTH);
     mainPanel.add(roomListPanel, BorderLayout.CENTER);
 
-    JPanel helperButtom = new JPanel(new GridLayout());
-    helperButtom.setBackground(new Color(0, 0, 0, 0));
-    helperButtom.setAlignmentX(0.0f);
-    chooseDateButton = new CustomButton();
-    chooseDateButton.setBackground(COLORS.primary);
-    chooseDateButton.setForeground(COLORS.surface);
-    chooseDateButton.setText("Book now");
-    chooseDateButton.setFont(font.getH6());
-    chooseDateButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-    helperButtom.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
-    chooseDateButton.setFocusable(false);
-    helperButtom.setMaximumSize(new Dimension(320, helperButtom.getPreferredSize().height));
-    helperButtom.add(chooseDateButton);
-
-
-    // ADDING COMPONENTS TO SUMMARY PANEL
-    roomDetails.add(hotelImage);
-    roomDetails.add(typePricePanel);
-    roomDetails.add(roomDetailsLabel);
-    roomDetails.add(roomDetailsContent);
-    roomDetails.add(roomFeaturesLabel);
-    roomDetails.add(roomFeaturesPanel);
-
-    roomDetails.add(Box.createVerticalGlue());
-    roomDetails.add(helperButtom);
+    
 
 
     
@@ -255,11 +266,25 @@ public class Home extends Screen implements ActionListener{
 
   }
 
+  public void updateDisplayedRooms(ArrayList<Room> updatedRooms) {
+    rooms = updatedRooms;
+  }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     if( e.getSource() == chooseDateButton){
-      navigateTo("/reservation");
+      try {
+        ScreenManager sm = InitRoutes.screenManager; 
+        
+        if(client.isLoggedIn){
+          sm.add(new Reservation(currentCard, client), "/reservation");
+          navigateTo("/reservation");
+        }else{
+          navigateTo("/login");
+        }
+      } catch (FontFormatException | IOException e1) {
+        e1.printStackTrace();
+      }
     }
   }
 

@@ -35,12 +35,12 @@ public class Register extends Screen implements ActionListener, MouseListener{
   private CustomButton signupButton;
   private JLabel emailErr,passwordErr;
   private JLabel linkLabel;
+  private User client;
 
-  private User user;
 
-  public Register() throws FontFormatException, IOException{
+  public Register(User client) throws FontFormatException, IOException{
     initComponents();
-    user = new User();
+    this.client = client;
     
   }
 
@@ -74,16 +74,15 @@ public class Register extends Screen implements ActionListener, MouseListener{
           emailErr.setVisible(false);
           passwordErr.setVisible(true);
         }else{ 
-          boolean userExist = user.checkUser(email) ;
+          boolean userExist = client.checkUser(email) ;
           if (!userExist) {
-            user.setUser(email, pass);
+            client.saveUserToDb(email, pass);
+            client.setUser(client.getUserIDFromDB(email), email, pass);
             loginField.setText("");
             passField.setText("");
             emailErr.setVisible(false);
             passwordErr.setVisible(false);
             navigateTo("/home");
-            
-
           }else{
             emailErr.setText("email already exist");
             emailErr.setVisible(true);

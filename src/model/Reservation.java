@@ -19,8 +19,13 @@ public class Reservation {
     private int bathrooms;
     private int bedrooms;
     private String description;
+    private int clientID;
+    private String clientName; 
+    private String email;
     
 
+    public Reservation() {
+    }
     public int getReservationID() {
         return ReservationID;
     }
@@ -109,6 +114,19 @@ public class Reservation {
         this.description = description;
     }
 
+    public int getClientID()
+    {
+        return clientID;
+    }
+    public String getClientName()
+    {
+        return clientName;
+    }
+    public String getEmail()
+    {
+        return email;
+    }
+
     public Reservation(int ReservationID, int RoomID, double TotalPrice, LocalDate checkIn, LocalDate checkOut, String roomType, String imagePath, int maxMembers, int bathrooms, int bedrooms, String description) {
         this.ReservationID = ReservationID;
         this.RoomID = RoomID;
@@ -123,8 +141,39 @@ public class Reservation {
         this.description = description;
     }
 
-    public Reservation() {
-        
+    
+
+    public Reservation(
+        int ReservationID, 
+        int RoomID, 
+        double TotalPrice, 
+        LocalDate checkIn, 
+        LocalDate checkOut,
+        String roomType, 
+        String imagePath, 
+        int maxMembers, 
+        int bathrooms, 
+        int bedrooms, 
+        String description, 
+        int clientID, 
+        String clientName, 
+        String email
+    ) 
+    {
+        this.ReservationID = ReservationID;
+        this.RoomID = RoomID;
+        this.TotalPrice = TotalPrice;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.roomType = roomType;
+        this.imagePath = imagePath;
+        this.maxMembers = maxMembers;
+        this.bathrooms = bathrooms;
+        this.bedrooms = bedrooms;
+        this.description = description;
+        this.clientID = clientID;
+        this.clientName = clientName;
+        this.email = email;
     }
 
     public Reservation(Reservation reservedRoom) {
@@ -151,9 +200,9 @@ public class Reservation {
         ArrayList<Reservation> result = new ArrayList<Reservation>();
         String query = "SELECT  rsv.ReservationID, rm.roomID, rsv.TotalPrice, rsv.CheckInDate, \n" + //
                         "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
-                        "dt.Bedroom, dt.Description FROM Reservation rsv\n" + //
-                        "JOIN Room rm ON rsv.RoomID = rm.RoomID\n" + //
-                        "JOIN RoomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "dt.Bedroom, dt.Description FROM reservation rsv\n" + //
+                        "JOIN room rm ON rsv.RoomID = rm.RoomID\n" + //
+                        "JOIN roomdetails dt ON rm.RoomID = dt.RoomID\n" + //
                         "WHERE rsv.ClientID = " + ClientID ;
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         while (resultSet.next())
@@ -177,11 +226,51 @@ public class Reservation {
         return result;
     }
     
+    // Use this to get reservations by using the room ID
+    static public ArrayList<Reservation> getReservationsByRoom(int RoomID) throws SQLException {
+        ArrayList<Reservation> result = new ArrayList<Reservation>();
+        String query = "SELECT  rsv.ReservationID, rm.roomID, rsv.TotalPrice, rsv.CheckInDate, \n" + //
+                        "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
+                        "dt.Bedroom, dt.Description, cl.ClientID, cl.Name, cl.Email FROM reservation rsv\n" + //
+                        "JOIN room rm ON rsv.RoomID = rm.RoomID\n" + //
+                        "JOIN roomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "JOIN client cl ON rsv.ClientID=cl.ClientID\n" +
+                        "WHERE rsv.RoomID = " + RoomID ;
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        while (resultSet.next())
+        {
+            result.add(
+                new Reservation(
+                    resultSet.getInt(1), 
+                    resultSet.getInt(2),
+                    resultSet.getDouble(3),
+                    resultSet.getDate(4).toLocalDate(),
+                    resultSet.getDate(5).toLocalDate(),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getInt(8),
+                    resultSet.getInt(9),
+                    resultSet.getInt(10),
+                    resultSet.getString(11),
+                    resultSet.getInt(12),
+                    resultSet.getString(13),
+                    resultSet.getString(14)
+                ) 
+            );
+        }
+        return result;
+    }
+
     // This is to cancel the reservation:
     public void cancelReservation() throws SQLException {
         int reservationId = this.ReservationID;
-        String query = "DELETE FROM Reservation WHERE ReservationID = " + reservationId;
+        String query = "DELETE FROM reservation WHERE ReservationID = " + reservationId;
         // Assuming you already have a connection object
         DataBase.getStatement().executeUpdate(query);
     }
+
+    public void saveReservationToDb(int userId, int roomId,LocalDate ci, LocalDate co, float total ) throws SQLException{
+        System.out.println(ci + " | " + co);
+        DataBase.getStatement().executeUpdate("insert into reservation (clientid, roomid, checkindate, checkoutdate, totalprice) values("+userId+","+roomId+", '"+ci+"', '"+co+"', "+total+")");
+      }
 }

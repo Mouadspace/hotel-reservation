@@ -36,12 +36,12 @@ public class Login extends Screen implements ActionListener, MouseListener{
   private CustomButton loginButton;
   private JLabel authErr;
   private JLabel linkLabel;
+  private User client;
 
-  private User user ;
 
-  public Login() throws FontFormatException, IOException{
+  public Login(User client) throws FontFormatException, IOException{
     initComponents();
-    user = new User();
+    this.client = client;
   }
 
   private void setMargin(JComponent cmp,int top, int left, int bottom, int right){
@@ -64,13 +64,13 @@ public class Login extends Screen implements ActionListener, MouseListener{
         String email = loginField.getText();
         String pass  = passField.getText();
 
-        boolean userExist = user.checkUser(email,pass) ;
+        boolean userExist = client.checkUser(email,pass) ;
         if (userExist) 
         {
           loginField.setText("");
           passField.setText("");
           authErr.setVisible(false);
-          //setUser
+          client.setUser(client.getUserIDFromDB(email), email, pass);
           navigateTo("/home");
         }
         else if (Admin.checkAdmin(email, pass))

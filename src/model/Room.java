@@ -10,7 +10,7 @@ import DB.DataBase;
 public class Room {
     private
         int roomID;
-        String roomName;
+        String roomName; // AKA Room Type
         String building;
         float price;
         String image;
@@ -87,6 +87,26 @@ public class Room {
         DataBase.getStatement().executeUpdate(roomQuery);
     }
 
+    public void Update(
+        String type, 
+        String price, 
+        String title, 
+        String members, 
+        String bathroom, 
+        String bedroom, 
+        String description, 
+        String building
+    ) throws SQLException
+    {
+        String roomQuery = "UPDATE room SET roomType='" + type + "', Price=" + price + ", Title='" + title + "' WHERE RoomID=" + Integer.toString(roomID);
+        String roomDetailQuery = "UPDATE roomdetails SET Max_Members=" + members + ", Bathroom=" + bathroom + ", Bedroom=" + bedroom + ", Description='" + description + "', Building='" + building + "' WHERE RoomID=" + Integer.toString(roomID);
+        System.out.println(roomDetailQuery);
+        System.out.println(roomQuery);
+        
+        DataBase.getStatement().executeUpdate(roomDetailQuery);
+        DataBase.getStatement().executeUpdate(roomQuery);
+    }
+
     static public ArrayList<Room> GetRooms() throws SQLException
     {
         ArrayList<Room> ret = new ArrayList<Room>();
@@ -111,6 +131,30 @@ public class Room {
         }
         return ret;
     }
+
+    static public ArrayList<Room> GetRoomsByType(String roomType) throws SQLException {
+        ArrayList<Room> ret = new ArrayList<Room>();
+        String query = "SELECT R.RoomID, R.roomType, RD.Building ,R.Price, R.imagePath, RD.Max_Members, RD.Bathroom, RD.Bedroom, RD.Description, R.Title FROM room as R INNER JOIN roomdetails as RD ON R.RoomID = RD.RoomID WHERE R.roomType='" + roomType + "'";
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        while (resultSet.next()) {
+            ret.add(
+                new Room(
+                    resultSet.getInt(1), 
+                    resultSet.getString(10),
+                    resultSet.getString(2), 
+                    resultSet.getString(3), 
+                    resultSet.getFloat(4),
+                    resultSet.getString(5),
+                    resultSet.getInt(6),
+                    resultSet.getInt(7),
+                    resultSet.getInt(8),
+                    resultSet.getString(9)
+                )
+            );
+        }
+        return ret;
+    }
+    
 
     static public ArrayList<Room> GetRoomInBuilding(String building) throws SQLException
     {

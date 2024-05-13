@@ -18,11 +18,15 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import constants.COLORS;
 import constants.FONTS;
+import model.Room;
+import model.User;
 import mswing.CustomButton;
 import mswing.CustomField;
 import mswing.CustomPanel;
+import routes.InitRoutes;
 import utils.ImgUtil;
 import utils.navigation.Screen;
+import utils.navigation.ScreenManager;
 
 public class Reservation extends Screen implements ActionListener, DateChangeListener {
   private CustomButton backButton;
@@ -35,7 +39,9 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   private JLabel totalPrices;
   private JLabel taxesPrice;
   private CustomButton confirmPayButton;
-
+  private Room room;
+  private User client;
+  private float total;
 
 
 
@@ -50,7 +56,12 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
 
-  public Reservation() throws FontFormatException, IOException{
+  public Reservation(Room selectedRoom, User client) throws FontFormatException, IOException{
+    
+    this.client = client;
+    System.out.println(client.getEmail() + " - " +client.getUserID());
+    room = selectedRoom;
+    total = room.getPrice();
     setLayout(new BorderLayout());
     setBackground(COLORS.background);
 
@@ -89,7 +100,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     summaryPanel.setPreferredSize(new Dimension(320, 0));
 
     JLabel hotelImage = new JLabel();
-    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/connecting-rooms.jpg", 12, 280)));
+    hotelImage.setIcon(new ImageIcon(ImgUtil.makeRounedImage("assets/" + room.getImage(), 12, 280)));
     hotelImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
     hotelImage.setAlignmentX(0.0f);
 
@@ -168,7 +179,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     pricingPanel.add(pricingText, gbcPricing);
 
 
-    prices = new JLabel("$100");
+    prices = new JLabel((int)room.getPrice() + "$");
     prices.setFont(font.getLabel());
     gbcPricing.gridx = 0;
     gbcPricing.gridy = 1;
@@ -210,7 +221,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     gbcPricing.weightx = 0;
     pricingPanel.add(totalPricesLabel, gbcPricing);
 
-    totalPrices = new JLabel("220$");
+    totalPrices = new JLabel((int)room.getPrice() + "$");
     totalPrices.setFont(font.getLabelBold());
     totalPrices.setForeground(COLORS.success);
     gbcPricing.gridx = 1;
@@ -503,15 +514,26 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     backButton.addActionListener(this);
     startDatePicker.addDateChangeListener(this);
     endDatePicker.addDateChangeListener(this);
+    confirmPayButton.addActionListener(this);
 
   }
 
 
+
   @Override
   public void actionPerformed(ActionEvent e) {
+    ScreenManager sm =  InitRoutes.screenManager;
     if (e.getSource() == backButton){
-      System.out.println("back icon clicked");
       navigateTo("/home");
+      sm.remove(this);
+    }else if  (e.getSource() == confirmPayButton){
+      try {
+        model.Reservation resv = new model.Reservation();
+        resv.saveReservationToDb(client.getUserID(), room.getRoomID(),startDatePicker.getDate(),endDatePicker.getDate(), total);
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+
     }
   }
 
@@ -523,6 +545,7 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     LocalDate secondDate = endDatePicker.getDate();
     long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
 
+    int price = (int) room.getPrice();
     if(diff > 0){
       confirmPayButton.setEnabled(true);
       confirmPayButton.setEffectColor(new Color(252, 255, 255));
@@ -532,27 +555,26 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
       repaint();
 
 
-      int res = (int) (100 * diff);
-      int  taxes = (int) (res * 0.1);
+      total = (int) (price * diff);
+      int  taxes = (int) (total * 0.1);
 
-      prices.setText("100$ x "+ diff + " nights");
-      calc.setText(res  + "$");
+      prices.setText(price + "$ x "+ diff + " nights");
+      calc.setText(total  + "$");
       taxesPrice.setText(taxes + "$");
 
-      res += taxes;
-      totalPrices.setText(res + "$");
-      confirmPayButton.setText("Confirm & pay " + res + "$");
+      total += taxes;
       
+      totalPrices.setText(total + "$");
+      confirmPayButton.setText("Confirm & pay " + total + "$");
     }else{
       confirmPayButton.setText("Invalide Dates");
       confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
       confirmPayButton.setEnabled(false);
-      prices.setText("100$");
+      prices.setText(price + "$");
       calc.setText("");
       taxesPrice.setText("");
       totalPrices.setText("");
     }
-
 
   }
 
