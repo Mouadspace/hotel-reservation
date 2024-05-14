@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -42,6 +43,8 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   private Room room;
   private User client;
   private float total;
+  private JLabel statusLabel;
+  private CustomPanel circle;
 
 
 
@@ -59,7 +62,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
   public Reservation(Room selectedRoom, User client) throws FontFormatException, IOException{
     
     this.client = client;
-    System.out.println(client.getEmail() + " - " +client.getUserID());
     room = selectedRoom;
     total = room.getPrice();
     setLayout(new BorderLayout());
@@ -107,12 +109,12 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     
     JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     statusPanel.setBackground(new Color(0, 0, 0, 0));
-    JLabel statusLabel = new JLabel("available");
+    statusLabel = new JLabel("available");
     statusLabel.setFont(font.getLabel());
     statusLabel.setForeground(COLORS.success);
     statusPanel.setAlignmentX(0.0f);
     
-    CustomPanel circle = new CustomPanel();
+    circle = new CustomPanel();
     circle.setRoundAll(100);
     circle.setPreferredSize(new Dimension(10, 10));
     circle.setBackground(COLORS.success);
@@ -526,10 +528,13 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     if (e.getSource() == backButton){
       navigateTo("/home");
       sm.remove(this);
-    }else if  (e.getSource() == confirmPayButton){
+
+    }else if  (e.getSource() == confirmPayButton ){
       try {
         model.Reservation resv = new model.Reservation();
         resv.saveReservationToDb(client.getUserID(), room.getRoomID(),startDatePicker.getDate(),endDatePicker.getDate(), total);
+        navigateTo("/home");
+        sm.remove(this);  
       } catch (Exception e1) {
         e1.printStackTrace();
       }
@@ -546,34 +551,44 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
     long diff = ChronoUnit.DAYS.between(firstDate, secondDate);
 
     int price = (int) room.getPrice();
-    if(diff > 0){
-      confirmPayButton.setEnabled(true);
-      confirmPayButton.setEffectColor(new Color(252, 255, 255));
+    try {
+      if(diff > 0 && room.isRoomAvailable(firstDate, secondDate)){
+        confirmPayButton.setEnabled(true);
+        confirmPayButton.setEffectColor(new Color(252, 255, 255));
+        statusLabel.setText("available");
+        statusLabel.setForeground(COLORS.success);
+        circle.setBackground(COLORS.success);
 
-      checkOutDate.setText(secondDate.toString());
-      checkInDate.setText(firstDate.toString());
-      repaint();
+        checkOutDate.setText(secondDate.toString());
+        checkInDate.setText(firstDate.toString());
+        repaint();
 
 
-      total = (int) (price * diff);
-      int  taxes = (int) (total * 0.1);
+        total = (int) (price * diff);
+        int  taxes = (int) (total * 0.1);
 
-      prices.setText(price + "$ x "+ diff + " nights");
-      calc.setText(total  + "$");
-      taxesPrice.setText(taxes + "$");
+        prices.setText(price + "$ x "+ diff + " nights");
+        calc.setText(total  + "$");
+        taxesPrice.setText(taxes + "$");
 
-      total += taxes;
-      
-      totalPrices.setText(total + "$");
-      confirmPayButton.setText("Confirm & pay " + total + "$");
-    }else{
-      confirmPayButton.setText("Invalide Dates");
-      confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
-      confirmPayButton.setEnabled(false);
-      prices.setText(price + "$");
-      calc.setText("");
-      taxesPrice.setText("");
-      totalPrices.setText("");
+        total += taxes;
+        
+        totalPrices.setText(total + "$");
+        confirmPayButton.setText("Confirm & pay " + total + "$");
+      }else{
+        statusLabel.setText("not available");
+        statusLabel.setForeground(COLORS.error);
+        circle.setBackground(COLORS.error);
+        confirmPayButton.setText("Room is not avaiable");
+        confirmPayButton.setEffectColor(new Color(252, 98, 34, 80));
+        confirmPayButton.setEnabled(false);
+        prices.setText(price + "$");
+        calc.setText("");
+        taxesPrice.setText("");
+        totalPrices.setText("");
+      }
+    } catch (SQLException e1) {
+      e1.printStackTrace();
     }
 
   }

@@ -233,7 +233,7 @@ public class Reservation {
                         "rsv.CheckOutDate, rm.roomType, rm.imagePath, dt.Max_Members, dt.Bathroom,\n" + //
                         "dt.Bedroom, dt.Description, cl.ClientID, cl.Name, cl.Email FROM reservation rsv\n" + //
                         "JOIN room rm ON rsv.RoomID = rm.RoomID\n" + //
-                        "JOIN roomDetails dt ON rm.RoomID = dt.RoomID\n" + //
+                        "JOIN roomdetails dt ON rm.RoomID = dt.RoomID\n" + //
                         "JOIN client cl ON rsv.ClientID=cl.ClientID\n" +
                         "WHERE rsv.RoomID = " + RoomID ;
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);

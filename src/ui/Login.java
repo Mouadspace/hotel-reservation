@@ -127,8 +127,9 @@ public class Login extends Screen implements ActionListener, MouseListener{
 
         
     CustomButton googleSignupButton = new CustomButton();    
-    googleSignupButton.setBackground(COLORS.primary);
-    googleSignupButton.setForeground(Color.WHITE);
+    googleSignupButton.setBackground(COLORS.surface);
+    googleSignupButton.setForeground(COLORS.primary);
+    googleSignupButton.setBorder(1, COLORS.primary);
     googleSignupButton.setText("Use Google Account");
     googleSignupButton.setFocusable(false);
     googleSignupButton.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 60));

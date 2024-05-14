@@ -66,7 +66,6 @@ public class Room {
         return this.title;
     }
 
-    
     public boolean IsRoomCurrentlyReserved() throws SQLException
     {
         LocalDate now = LocalDate.now();
@@ -74,6 +73,30 @@ public class Room {
         ResultSet resultSet = DataBase.getStatement().executeQuery(query);
         if (resultSet.next()) return true;
         return false;
+    }
+    public boolean isRoomAvailable(LocalDate start, LocalDate end) throws SQLException
+    {
+        String query = "SELECT COUNT(*) AS available_rooms "
+        +"FROM room "
+        +"WHERE RoomID = "+this.roomID+" and RoomID NOT IN ( "
+            +"SELECT RoomID "
+            +"FROM reservation "
+            +"WHERE " 
+            +"RoomID = "+this.roomID+" and "
+            +"(CheckInDate <= '"+end+"' AND CheckOutDate >= '"+start+"') "
+            +"OR (CheckInDate <= '"+start+"' AND CheckOutDate >= '"+end+"') "
+            +"OR ('"+start+"' <= CheckInDate AND '"+end+"' >= CheckOutDate) "
+        +");";
+
+        ResultSet resultSet = DataBase.getStatement().executeQuery(query);
+        int c = 0;
+        if (resultSet.next()) {
+            c = resultSet.getInt(1);
+        };
+        
+        if (c > 0) return true;
+        else return false;
+
     }
 
     public void Drop() throws SQLException
