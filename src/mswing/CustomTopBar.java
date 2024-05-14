@@ -34,6 +34,31 @@ public class CustomTopBar extends Screen {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         FONTS font = new FONTS();
         JLabel logo = new JLabel(new ImageIcon(ImgUtil.resizeImage("assets/logo.png", 40)));
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        logo.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                navigateTo("/home");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent arg0) {
+            }
+            
+        });
 
         JLabel userReservations = new JLabel(client.isLoggedIn ? "Reservations" : "");
         userReservations.setFont(font.getLabel());
