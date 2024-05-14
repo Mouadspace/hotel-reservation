@@ -194,7 +194,7 @@ public class Login extends Screen implements ActionListener, MouseListener{
     bLabel.setFont(font.getLabelBold());
     bLabel.setForeground(COLORS.grey);
 
-    linkLabel = new JLabel("Sign up");
+    linkLabel = new JLabel("<html><u>Sign up</u></html>");
     linkLabel.setFont(font.getLabelBold());
     linkLabel.setForeground(COLORS.primary);
     linkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));

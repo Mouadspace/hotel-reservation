@@ -498,13 +498,6 @@ public class Reservation extends Screen implements ActionListener, DateChangeLis
 
 
 
-
-
-
-
-
-
-
     // ADDING PANELES TO FRAME
     add(headerPanel, BorderLayout.NORTH);
     add(mainPanel, BorderLayout.CENTER);
